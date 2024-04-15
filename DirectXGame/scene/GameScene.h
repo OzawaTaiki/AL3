@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Audio.h"
+#include "DebugCamera.h"
 #include "DirectXCommon.h"
 #include "Input.h"
 #include "Model.h"
@@ -47,4 +48,18 @@ private: // メンバ変数
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
+
+	Sprite* sprite = nullptr;
+	Model* model = nullptr;
+
+	uint32_t textueHandle = 0;
+	uint32_t soundDataHandle = 0;
+	uint32_t voiceHandle = 0;
+
+	WorldTransform worldTransform;
+	ViewProjection viewProjection;
+
+	float inputFloat3[3] = {0, 0, 0};
+
+	DebugCamera* debugCamera = nullptr;
 };
