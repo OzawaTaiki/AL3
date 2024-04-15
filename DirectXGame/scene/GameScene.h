@@ -4,6 +4,7 @@
 #include "DirectXCommon.h"
 #include "Input.h"
 #include "Model.h"
+#include "Player.h"
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
@@ -47,4 +48,15 @@ private: // メンバ変数
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
+
+	// テクスチャハンドル
+	uint32_t textrueHandle = 0;
+
+	// 3Dモデルデータ
+	Model* model = nullptr;
+
+	// ビュープロジェクション
+	ViewProjection viewProjection;
+
+	PLayer* player = nullptr;
 };
