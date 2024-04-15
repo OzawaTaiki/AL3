@@ -49,6 +49,7 @@ void GameScene::Update() {
 	if (input_->TriggerKey(DIK_SPACE)) {
 		audio_->StopWave(voiceHandle);
 	}
+#ifdef _DEBUG
 
 	// ImGui::Text("kamata tarou %d,%d,%d", 2050, 12, 31);
 	ImGui::Begin("Debug1");
@@ -57,6 +58,7 @@ void GameScene::Update() {
 	ImGui::SliderFloat3("SliderFloat3", inputFloat3, 0.0f, 1.0f);
 	ImGui::End();
 	// ImGui::ShowDemoWindow();
+#endif // _DEBUG
 
 	debugCamera->Update();
 }
