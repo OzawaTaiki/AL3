@@ -2,12 +2,12 @@
 #include "TextureManager.h"
 #include <cassert>
 
-GameScene::GameScene() {  }
+GameScene::GameScene() {}
 
-GameScene::~GameScene() 
-{ 
-	delete model; 
+GameScene::~GameScene() {
+	delete model;
 	delete player;
+	delete debugCamera;
 }
 
 void GameScene::Initialize() {
@@ -17,16 +17,27 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	textrueHandle = TextureManager::Load("uvChecker.png");
-		
+
 	model = Model::Create();
 
 	viewProjection.Initialize();
 
 	player = new PLayer();
-	player->Initialize(model,textrueHandle);
+	player->Initialize(model, textrueHandle);
+
+	debugCamera = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 }
 
-void GameScene::Update() { player->Update(); }
+void GameScene::Update() {
+#ifdef _DEBUG
+	//if (input->PushKey(DIK_0))
+
+#endif // _DEBUG
+
+
+	player->Update();
+	debugCamera->Update();
+}
 
 void GameScene::Draw() {
 

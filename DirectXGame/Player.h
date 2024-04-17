@@ -1,7 +1,8 @@
 #pragma once
+#include "Input.h"
 #include "Model.h"
+#include "ViewProjection.h"
 #include "WorldTransform.h"
-#include"ViewProjection.h"
 
 class PLayer {
 public:
@@ -13,4 +14,10 @@ private:
 	WorldTransform worldTransform;
 	Model* model = nullptr;
 	uint32_t textureHandle = 0;
+
+	Input* input = nullptr;
+
+#ifdef _DEBUG
+	void ImGui();
+#endif // _DEBUG
 };
