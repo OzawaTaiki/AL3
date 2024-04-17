@@ -1,6 +1,7 @@
 #include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
+#include "AxisIndicator.h"
 
 GameScene::GameScene() {}
 
@@ -26,6 +27,8 @@ void GameScene::Initialize() {
 	player->Initialize(model, textrueHandle);
 
 	debugCamera = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
+	AxisIndicator::GetInstance()->SetVisible(1);
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection);
 }
 
 void GameScene::Update() {
@@ -38,7 +41,6 @@ void GameScene::Update() {
 	player->Update();
 	if (debugCameraActive) {
 		debugCamera->Update();
-		
 	}
 }
 
