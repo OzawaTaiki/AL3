@@ -30,13 +30,16 @@ void GameScene::Initialize() {
 
 void GameScene::Update() {
 #ifdef _DEBUG
-	//if (input->PushKey(DIK_0))
+	if (input_->PushKey(DIK_0))
+		debugCameraActive = debugCameraActive ? false : true;
 
 #endif // _DEBUG
 
-
 	player->Update();
-	debugCamera->Update();
+	if (debugCameraActive) {
+		debugCamera->Update();
+		
+	}
 }
 
 void GameScene::Draw() {
