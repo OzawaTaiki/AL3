@@ -3,6 +3,13 @@
 #include "MyLib.h"
 #include <cassert>
 
+PLayer::~PLayer() {
+	for (PlayerBullet* bullet : bullets) {
+		delete bullet;
+	}
+	bullets.clear();
+}
+
 void PLayer::Initialize(Model* _model, uint32_t _textrueHandle) {
 	// NULLチェック
 	assert(_model);
@@ -40,7 +47,7 @@ void PLayer::Update() {
 	move = VectorFunction::Normalize(move);
 
 	Attack();
-	if (bullet) {
+	for (PlayerBullet* bullet : bullets) {
 		bullet->Update();
 	}
 
@@ -57,8 +64,9 @@ void PLayer::Update() {
 	worldTransform.TransferMatrix();
 }
 
-void PLayer::Draw(ViewProjection& _viewProjection) { model->Draw(worldTransform, _viewProjection, textureHandle);
-	if (bullet) {
+void PLayer::Draw(ViewProjection& _viewProjection) {
+	model->Draw(worldTransform, _viewProjection, textureHandle);
+	for (PlayerBullet* bullet : bullets) {
 		bullet->Draw(_viewProjection);
 	}
 }
@@ -72,11 +80,12 @@ void PLayer::rotate() {
 }
 
 void PLayer::Attack() {
-	if (input->PushKey(DIK_SPACE)) {
+	if (input->TriggerKey(DIK_SPACE)) {
+
 		PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->initialize(model, worldTransform.translation_);
 
-		bullet = newBullet;
+		bullets.push_back(newBullet);
 	}
 }
 

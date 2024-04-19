@@ -1,12 +1,15 @@
 #pragma once
 #include "Input.h"
 #include "Model.h"
+#include "PlayerBullet.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "PlayerBullet.h"
+#include <list>
 
 class PLayer {
 public:
+	~PLayer();
+
 	void Initialize(Model* _model, uint32_t _textrueHandle);
 	void Update();
 	void Draw(ViewProjection& _viewProjection);
@@ -25,7 +28,7 @@ private:
 	const float kRotSpeed = 0.02f;      // 回転の速さ
 	const float kCharacterSpeed = 0.2f; // キャラクターの速さ
 
-	PlayerBullet* bullet = nullptr;
+	std::list<PlayerBullet*> bullets;
 
 #ifdef _DEBUG
 	void ImGui();
