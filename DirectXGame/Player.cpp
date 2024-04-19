@@ -20,8 +20,9 @@ void PLayer::Update() {
 	ImGui();
 #endif // _DEBUG
 
-	Vector3 move = {0, 0, 0};           // キャラクターの移動ベクトル
-	const float kCharacterSpeed = 0.2f; // キャラクターの速さ
+	rotate();
+
+	Vector3 move = {0, 0, 0}; // キャラクターの移動ベクトル
 
 	// 移動ベクトルの変更
 	if (input->PushKey(DIK_LEFT)) {
@@ -38,13 +39,17 @@ void PLayer::Update() {
 	}
 	move = VectorFunction::Normalize(move);
 
-	
+	Attack();
+	if (bullet) {
+		bullet->Update();
+	}
+
 	// 座標移動
 	worldTransform.translation_ += move;
-	
-	Vector3 minLine = {-34.0f, -18.0f,-45.0f};
-	Vector3 maxLine = {34.0f, 18.0f,45.0f};
-	
+
+	Vector3 minLine = {-34.0f, -18.0f, -45.0f};
+	Vector3 maxLine = {34.0f, 18.0f, 45.0f};
+
 	VectorFunction::Clamp(worldTransform.translation_, minLine, maxLine);
 
 	// 行列更新
@@ -52,7 +57,28 @@ void PLayer::Update() {
 	worldTransform.TransferMatrix();
 }
 
-void PLayer::Draw(ViewProjection& _viewProjection) { model->Draw(worldTransform, _viewProjection, textureHandle); }
+void PLayer::Draw(ViewProjection& _viewProjection) { model->Draw(worldTransform, _viewProjection, textureHandle);
+	if (bullet) {
+		bullet->Draw(_viewProjection);
+	}
+}
+
+void PLayer::rotate() {
+	if (input->PushKey(DIK_A)) {
+		worldTransform.rotation_.y += 0.02f;
+	} else if (input->PushKey(DIK_D)) {
+		worldTransform.rotation_.y -= 0.02f;
+	}
+}
+
+void PLayer::Attack() {
+	if (input->PushKey(DIK_SPACE)) {
+		PlayerBullet* newBullet = new PlayerBullet();
+		newBullet->initialize(model, worldTransform.translation_);
+
+		bullet = newBullet;
+	}
+}
 
 void PLayer::ImGui() {
 	ImGui::Begin("Player");
