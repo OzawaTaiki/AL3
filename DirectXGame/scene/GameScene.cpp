@@ -41,6 +41,13 @@ void GameScene::Update() {
 	player->Update();
 	if (debugCameraActive) {
 		debugCamera->Update();
+		viewProjection.matView = debugCamera->GetViewProjection().matView;
+		viewProjection.matProjection = debugCamera->GetViewProjection().matProjection;
+		viewProjection.TransferMatrix();
+	}
+	else
+	{
+		viewProjection.UpdateMatrix();
 	}
 }
 
