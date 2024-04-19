@@ -15,8 +15,9 @@ public:
 	void Draw(ViewProjection& _viewProjection);
 
 private:
+	//旋回
 	void rotate();
-
+	//射撃
 	void Attack();
 
 	WorldTransform worldTransform;

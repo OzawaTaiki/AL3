@@ -27,6 +27,14 @@ void PLayer::Update() {
 	ImGui();
 #endif // _DEBUG
 
+	bullets.remove_if([](PlayerBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+	});
+
 	rotate();
 
 	Vector3 move = {0, 0, 0}; // キャラクターの移動ベクトル
@@ -73,17 +81,22 @@ void PLayer::Draw(ViewProjection& _viewProjection) {
 
 void PLayer::rotate() {
 	if (input->PushKey(DIK_A)) {
-		worldTransform.rotation_.y += 0.02f;
-	} else if (input->PushKey(DIK_D)) {
 		worldTransform.rotation_.y -= 0.02f;
+	} else if (input->PushKey(DIK_D)) {
+		worldTransform.rotation_.y += 0.02f;
 	}
 }
 
 void PLayer::Attack() {
-	if (input->TriggerKey(DIK_SPACE)) {
+	// if (input->TriggerKey(DIK_SPACE)) {
+	if (input->PushKey(DIK_SPACE)) {
+
+		const float kBulletSpeed = 1.0f;
+		Vector3 velocity(0, 0, kBulletSpeed);
+		velocity = VectorFunction::TransformNormal(velocity, worldTransform.matWorld_);
 
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->initialize(model, worldTransform.translation_);
+		newBullet->initialize(model, worldTransform.translation_, velocity);
 
 		bullets.push_back(newBullet);
 	}

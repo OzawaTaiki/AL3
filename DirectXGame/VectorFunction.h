@@ -15,6 +15,7 @@ public:
 	static Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);
 
 	static void Clamp(Vector3& _value, const Vector3& _min, const Vector3& _max);
+	static Vector3 TransformNormal(const Vector3& _v, const Matrix4x4& _m);
 };
 
 Vector3& operator+=( Vector3& _v1, const Vector3& _v2);
