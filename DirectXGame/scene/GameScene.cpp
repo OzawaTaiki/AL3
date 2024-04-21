@@ -33,7 +33,7 @@ void GameScene::Initialize() {
 
 void GameScene::Update() {
 #ifdef _DEBUG
-	if (input_->PushKey(DIK_0))
+	if (input_->TriggerKey(DIK_0))
 		debugCameraActive = debugCameraActive ? false : true;
 
 #endif // _DEBUG

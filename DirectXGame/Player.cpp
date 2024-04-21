@@ -89,7 +89,7 @@ void PLayer::rotate() {
 
 void PLayer::Attack() {
 	// if (input->TriggerKey(DIK_SPACE)) {
-	if (input->PushKey(DIK_SPACE)) {
+	if (input->TriggerKey(DIK_SPACE)) {
 
 		const float kBulletSpeed = 1.0f;
 		Vector3 velocity(0, 0, kBulletSpeed);
