@@ -1,13 +1,14 @@
 #include "GameScene.h"
+#include "AxisIndicator.h"
 #include "TextureManager.h"
 #include <cassert>
-#include "AxisIndicator.h"
 
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
-	delete model;
+	delete playerModel;
 	delete player;
+	delete enemy;
 	delete debugCamera;
 }
 
@@ -17,14 +18,20 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
-	textrueHandle = TextureManager::Load("uvChecker.png");
+	playerTextrueHandle = TextureManager::Load("uvChecker.png");
+	enemyTextrueHandle = TextureManager::Load("axis/axis.jpg");
 
-	model = Model::Create();
+	playerModel = Model::Create();
+	enemyModel = Model::Create();
 
 	viewProjection.Initialize();
 
-	player = new PLayer();
-	player->Initialize(model, textrueHandle);
+	player = new Player();
+	player->Initialize(playerModel, playerTextrueHandle);
+
+	enemy = new Enemy();
+	enemy->Initialize(enemyModel, enemyTextrueHandle);
+	enemy->SetTranslete(Vector3(0, 2, 10));
 
 	debugCamera = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 	AxisIndicator::GetInstance()->SetVisible(1);
@@ -39,14 +46,14 @@ void GameScene::Update() {
 #endif // _DEBUG
 
 	player->Update();
+	if (enemy)
+		enemy->Update();
 	if (debugCameraActive) {
 		debugCamera->Update();
 		viewProjection.matView = debugCamera->GetViewProjection().matView;
 		viewProjection.matProjection = debugCamera->GetViewProjection().matProjection;
 		viewProjection.TransferMatrix();
-	}
-	else
-	{
+	} else {
 		viewProjection.UpdateMatrix();
 	}
 }
@@ -79,6 +86,8 @@ void GameScene::Draw() {
 	/// </summary>
 
 	player->Draw(viewProjection);
+	if (enemy)
+		enemy->Draw(viewProjection);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

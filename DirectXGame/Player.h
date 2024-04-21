@@ -6,18 +6,18 @@
 #include "WorldTransform.h"
 #include <list>
 
-class PLayer {
+class Player {
 public:
-	~PLayer();
+	~Player();
 
 	void Initialize(Model* _model, uint32_t _textrueHandle);
 	void Update();
 	void Draw(ViewProjection& _viewProjection);
 
 private:
-	//旋回
+	// 旋回
 	void rotate();
-	//射撃
+	// 射撃
 	void Attack();
 
 	WorldTransform worldTransform;

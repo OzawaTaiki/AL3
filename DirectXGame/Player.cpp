@@ -3,14 +3,15 @@
 #include "MyLib.h"
 #include <cassert>
 
-PLayer::~PLayer() {
+Player::~Player() {
 	for (PlayerBullet* bullet : bullets) {
 		delete bullet;
 	}
 	bullets.clear();
+
 }
 
-void PLayer::Initialize(Model* _model, uint32_t _textrueHandle) {
+void Player::Initialize(Model* _model, uint32_t _textrueHandle) {
 	// NULLチェック
 	assert(_model);
 	model = _model;
@@ -21,7 +22,7 @@ void PLayer::Initialize(Model* _model, uint32_t _textrueHandle) {
 	input = Input::GetInstance();
 }
 
-void PLayer::Update() {
+void Player::Update() {
 
 #ifdef _DEBUG
 	ImGui();
@@ -72,14 +73,14 @@ void PLayer::Update() {
 	worldTransform.TransferMatrix();
 }
 
-void PLayer::Draw(ViewProjection& _viewProjection) {
+void Player::Draw(ViewProjection& _viewProjection) {
 	model->Draw(worldTransform, _viewProjection, textureHandle);
 	for (PlayerBullet* bullet : bullets) {
 		bullet->Draw(_viewProjection);
 	}
 }
 
-void PLayer::rotate() {
+void Player::rotate() {
 	if (input->PushKey(DIK_A)) {
 		worldTransform.rotation_.y -= 0.02f;
 	} else if (input->PushKey(DIK_D)) {
@@ -87,7 +88,7 @@ void PLayer::rotate() {
 	}
 }
 
-void PLayer::Attack() {
+void Player::Attack() {
 	// if (input->TriggerKey(DIK_SPACE)) {
 	if (input->PushKey(DIK_SPACE)) {
 
@@ -102,7 +103,7 @@ void PLayer::Attack() {
 	}
 }
 
-void PLayer::ImGui() {
+void Player::ImGui() {
 	ImGui::Begin("Player");
 	ImGui::DragFloat3("Scale", &worldTransform.scale_.x, 0.1f);
 	ImGui::DragFloat3("Rotation", &worldTransform.rotation_.x, 0.1f);
