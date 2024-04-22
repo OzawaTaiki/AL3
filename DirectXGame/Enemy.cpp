@@ -26,6 +26,14 @@ void Enemy::Initialize(Model* _model, uint32_t _textrueHandle) {
 
 void Enemy::Update() {
 
+	bullets.remove_if([](EnemyBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+	});
+
 	(this->*Enemy::phase)();
 
 	worldTransform.UpdateMatrix();
