@@ -1,5 +1,6 @@
 #pragma once
 
+#include "EnemyBullet.h"
 #include "Input.h"
 #include "Model.h"
 #include "ViewProjection.h"
@@ -13,11 +14,18 @@ class Enemy {
 	};
 
 public:
+	~Enemy();
+
 	void Initialize(Model* _model, uint32_t _textrueHandle);
 	void Update();
 	void Draw(ViewProjection& _viewProjection);
 
 	void SetTranslete(const Vector3& _translation);
+
+	void InitializeApproachPhase();
+	void UpdateApproachPhase();
+
+	static const int kFireInterval = 60;
 
 private:
 #ifdef _DEBUG
@@ -26,7 +34,10 @@ private:
 
 	void LeavePhase();
 	void ApproachPhase();
+	
 
+
+	void Fire();
 
 	void (Enemy::*phase)();
 	static void (Enemy::*phaseTable[])();
@@ -34,4 +45,8 @@ private:
 	WorldTransform worldTransform;
 	Model* model = nullptr;
 	uint32_t textureHandle = 0;
+
+	std::list<EnemyBullet*> bullets;
+	int32_t fireTimer = 0;
+
 };
