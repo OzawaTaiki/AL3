@@ -31,7 +31,7 @@ void GameScene::Initialize() {
 
 	enemy = new Enemy();
 	enemy->Initialize(enemyModel, enemyTextrueHandle);
-	enemy->SetTranslete(Vector3(0, 2, 10));
+	enemy->SetTranslete(Vector3(0, 2, 20));
 
 	debugCamera = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 	AxisIndicator::GetInstance()->SetVisible(1);

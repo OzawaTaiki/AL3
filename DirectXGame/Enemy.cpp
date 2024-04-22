@@ -1,7 +1,7 @@
 #include "Enemy.h"
+#include "ImGuiManager.h"
 #include "VectorFunction.h"
 #include <cassert>
-#include "ImGuiManager.h"
 
 void Enemy::Initialize(Model* _model, uint32_t _textrueHandle) {
 	// NULLチェック
@@ -13,8 +13,17 @@ void Enemy::Initialize(Model* _model, uint32_t _textrueHandle) {
 }
 
 void Enemy::Update() {
-	Vector3 velocity(0, 0, -0.1f);
-	worldTransform.translation_ += velocity;
+
+	switch (phase) {
+	case Phase::Approach:
+	default:
+		ApproachPhase();
+		break;
+	case Phase::Leave:
+		LeavePhase();
+		break;
+	}
+
 	worldTransform.UpdateMatrix();
 
 	Imgui();
@@ -27,5 +36,18 @@ void Enemy::SetTranslete(const Vector3& _translation) { worldTransform.translati
 void Enemy::Imgui() {
 	ImGui::Begin("Enemy");
 	ImGui::DragFloat3("Translation", &worldTransform.translation_.x, 0.1f);
+	ImGui::Text("%s", phase == Phase::Approach ? "Approach" : "Leave");
 	ImGui::End();
+}
+
+void Enemy::LeavePhase() {
+	Vector3 velocity = {0, 0, -0.3f};
+	worldTransform.translation_ -= velocity;
+}
+void Enemy::ApproachPhase() {
+
+	Vector3 velocity(0, 0, -0.1f);
+	worldTransform.translation_ += velocity;
+	if (worldTransform.translation_.z < 0.0f)
+		phase = Phase::Leave;
 }
