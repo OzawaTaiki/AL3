@@ -36,6 +36,7 @@ void GameScene::Initialize() {
 	debugCamera = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 	AxisIndicator::GetInstance()->SetVisible(1);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection);
+
 }
 
 void GameScene::Update() {

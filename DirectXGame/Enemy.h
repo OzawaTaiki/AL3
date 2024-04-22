@@ -27,7 +27,9 @@ private:
 	void LeavePhase();
 	void ApproachPhase();
 
-	Phase phase = Phase::Approach;
+
+	void (Enemy::*phase)();
+	static void (Enemy::*phaseTable[])();
 
 	WorldTransform worldTransform;
 	Model* model = nullptr;

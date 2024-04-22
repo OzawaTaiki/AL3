@@ -3,6 +3,8 @@
 #include "VectorFunction.h"
 #include <cassert>
 
+void (Enemy::*Enemy::phaseTable[])() = {&Enemy::ApproachPhase, &Enemy::LeavePhase};
+
 void Enemy::Initialize(Model* _model, uint32_t _textrueHandle) {
 	// NULLチェック
 	assert(_model);
@@ -10,19 +12,13 @@ void Enemy::Initialize(Model* _model, uint32_t _textrueHandle) {
 	textureHandle = _textrueHandle;
 	// ワールドトランス初期化
 	worldTransform.Initialize();
+	phase = phaseTable[(int)Phase::Approach];
 }
+
 
 void Enemy::Update() {
 
-	switch (phase) {
-	case Phase::Approach:
-	default:
-		ApproachPhase();
-		break;
-	case Phase::Leave:
-		LeavePhase();
-		break;
-	}
+	(this->*Enemy::phase)();
 
 	worldTransform.UpdateMatrix();
 
@@ -36,7 +32,7 @@ void Enemy::SetTranslete(const Vector3& _translation) { worldTransform.translati
 void Enemy::Imgui() {
 	ImGui::Begin("Enemy");
 	ImGui::DragFloat3("Translation", &worldTransform.translation_.x, 0.1f);
-	ImGui::Text("%s", phase == Phase::Approach ? "Approach" : "Leave");
+	ImGui::Text("%s", phase == phaseTable[0] ? "Approach" : "Leave");
 	ImGui::End();
 }
 
@@ -48,6 +44,7 @@ void Enemy::ApproachPhase() {
 
 	Vector3 velocity(0, 0, -0.1f);
 	worldTransform.translation_ += velocity;
-	if (worldTransform.translation_.z < 0.0f)
-		phase = Phase::Leave;
+	if (worldTransform.translation_.z < 0.0f) {
+		phase = phaseTable[(int)Phase::Leave];
+	}
 }
