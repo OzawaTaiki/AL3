@@ -14,6 +14,8 @@ public:
 	void Update();
 	void Draw(ViewProjection& _viewProjection);
 
+	Vector3 GetWorldPositoin();
+
 private:
 	// 旋回
 	void rotate();

@@ -8,7 +8,6 @@ Player::~Player() {
 		delete bullet;
 	}
 	bullets.clear();
-
 }
 
 void Player::Initialize(Model* _model, uint32_t _textrueHandle) {
@@ -78,6 +77,16 @@ void Player::Draw(ViewProjection& _viewProjection) {
 	for (PlayerBullet* bullet : bullets) {
 		bullet->Draw(_viewProjection);
 	}
+}
+
+Vector3 Player::GetWorldPositoin() {
+	Vector3 worldPos;
+
+	worldPos.x = worldTransform.translation_.x;
+	worldPos.y = worldTransform.translation_.y;
+	worldPos.z = worldTransform.translation_.z;
+
+	return worldPos;
 }
 
 void Player::rotate() {

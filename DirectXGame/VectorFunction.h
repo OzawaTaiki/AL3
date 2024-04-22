@@ -20,3 +20,5 @@ public:
 
 Vector3& operator+=( Vector3& _v1, const Vector3& _v2);
 Vector3& operator-=( Vector3& _v1, const Vector3& _v2);
+Vector3 operator-(Vector3& _v1, const Vector3& _v2);
+Vector3 operator*(Vector3& _v1, float _k);

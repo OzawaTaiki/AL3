@@ -33,6 +33,8 @@ void GameScene::Initialize() {
 	enemy->Initialize(enemyModel, enemyTextrueHandle);
 	enemy->SetTranslete(Vector3(0, 2, 20));
 
+	enemy->SetPlayer(player);
+
 	debugCamera = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 	AxisIndicator::GetInstance()->SetVisible(1);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection);

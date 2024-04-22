@@ -6,6 +6,8 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 
+class Player;
+
 class Enemy {
 
 	enum class Phase {
@@ -21,6 +23,7 @@ public:
 	void Draw(ViewProjection& _viewProjection);
 
 	void SetTranslete(const Vector3& _translation);
+	void SetPlayer(Player* _player) { player = _player; };
 
 	void InitializeApproachPhase();
 	void UpdateApproachPhase();
@@ -34,8 +37,6 @@ private:
 
 	void LeavePhase();
 	void ApproachPhase();
-	
-
 
 	void Fire();
 
@@ -49,4 +50,5 @@ private:
 	std::list<EnemyBullet*> bullets;
 	int32_t fireTimer = 0;
 
+	Player* player = nullptr;
 };
