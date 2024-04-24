@@ -67,4 +67,9 @@ private: // メンバ変数
 
 	bool debugCameraActive = false;
 	DebugCamera* debugCamera = nullptr;
+
+	//関数
+	void CheckAllCollisions();
+
+
 };

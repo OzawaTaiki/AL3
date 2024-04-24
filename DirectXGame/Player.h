@@ -15,6 +15,10 @@ public:
 	void Draw(ViewProjection& _viewProjection);
 
 	Vector3 GetWorldPositoin();
+	const std::list<PlayerBullet*>& GetBullets() const { return bullets; };
+
+	void OnCollision();
+
 
 private:
 	// 旋回
@@ -30,6 +34,8 @@ private:
 
 	const float kRotSpeed = 0.02f;      // 回転の速さ
 	const float kCharacterSpeed = 0.2f; // キャラクターの速さ
+
+	const float radius = 2.0f;
 
 	std::list<PlayerBullet*> bullets;
 

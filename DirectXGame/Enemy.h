@@ -15,6 +15,7 @@ class Enemy {
 		Leave     // 離脱する
 	};
 
+
 public:
 	~Enemy();
 
@@ -25,8 +26,14 @@ public:
 	void SetTranslete(const Vector3& _translation);
 	void SetPlayer(Player* _player) { player = _player; };
 
+	const std::list<EnemyBullet*>& GetBullets() const { return bullets; };
+	Vector3 GetWorldPositoin();
+
 	void InitializeApproachPhase();
 	void UpdateApproachPhase();
+
+	void OnCollision();
+
 
 	static const int kFireInterval = 60;
 
@@ -51,4 +58,7 @@ private:
 	int32_t fireTimer = 0;
 
 	Player* player = nullptr;
+
+	const float radius = 2.0f;
 };
+

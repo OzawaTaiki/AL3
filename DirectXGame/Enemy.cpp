@@ -57,6 +57,7 @@ void Enemy::Draw(ViewProjection& _viewProjection) {
 
 void Enemy::SetTranslete(const Vector3& _translation) { worldTransform.translation_ = _translation; }
 
+
 void Enemy::InitializeApproachPhase() { fireTimer = kFireInterval; }
 
 void Enemy::UpdateApproachPhase() {
@@ -66,6 +67,8 @@ void Enemy::UpdateApproachPhase() {
 		fireTimer = kFireInterval;
 	}
 }
+
+void Enemy::OnCollision() {}
 
 void Enemy::Imgui() {
 	ImGui::Begin("Enemy");
@@ -102,4 +105,14 @@ void Enemy::Fire() {
 	newBullet->initialize(model, worldTransform.translation_, velocity);
 
 	bullets.push_back(newBullet);
+}
+
+Vector3 Enemy::GetWorldPositoin() {
+	Vector3 worldPos;
+
+	worldPos.x = worldTransform.translation_.x;
+	worldPos.y = worldTransform.translation_.y;
+	worldPos.z = worldTransform.translation_.z;
+
+	return worldPos;
 }

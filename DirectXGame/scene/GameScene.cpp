@@ -31,20 +31,21 @@ void GameScene::Initialize() {
 
 	enemy = new Enemy();
 	enemy->Initialize(enemyModel, enemyTextrueHandle);
-	enemy->SetTranslete(Vector3(0, 2, 20));
+	enemy->SetTranslete(Vector3(5, 2, 20));
 
 	enemy->SetPlayer(player);
 
 	debugCamera = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 	AxisIndicator::GetInstance()->SetVisible(1);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection);
-
 }
 
 void GameScene::Update() {
 #ifdef _DEBUG
 	if (input_->PushKey(DIK_0))
 		debugCameraActive = debugCameraActive ? false : true;
+	if (input_->PushKey(DIK_1))
+		enemy->SetTranslete(Vector3(5, 2, 20));
 
 #endif // _DEBUG
 
@@ -59,6 +60,8 @@ void GameScene::Update() {
 	} else {
 		viewProjection.UpdateMatrix();
 	}
+
+	CheckAllCollisions();
 }
 
 void GameScene::Draw() {
@@ -106,6 +109,63 @@ void GameScene::Draw() {
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
+
+#pragma endregion
+}
+
+void GameScene::CheckAllCollisions() {
+
+	const float playerSize = 1.0f;
+	const float enemySize = 1.0f;
+	const float playerBulletSize = 1.0f;
+	const float enemyBulletSize = 1.0f;
+	Vector3 posA, posB;
+
+	const std::list<PlayerBullet*>& playerBullets = player->GetBullets();
+	const std::list<EnemyBullet*>& enemyBullets = enemy->GetBullets();
+
+	float distance = 0;
+
+#pragma region 自機と敵弾の衝突判定
+	posA = player->GetWorldPositoin();
+	for (EnemyBullet* bullet : enemyBullets) {
+		posB = bullet->GetWorldPositoin();
+
+		distance = VectorFunction::length(posA - posB);
+		if (distance < playerSize + enemyBulletSize) {
+			player->OnCollision();
+			bullet->OnCollision();
+		}
+	}
+#pragma endregion
+
+#pragma region 自弾と敵の衝突判定
+	posA = enemy->GetWorldPositoin();
+	for (PlayerBullet* bullet : playerBullets) {
+		posB = bullet->GetWorldPositoin();
+
+		distance = VectorFunction::length(posA - posB);
+		if (distance < enemySize + playerBulletSize) {
+			enemy->OnCollision();
+			bullet->OnCollision();
+		}
+	}
+#pragma endregion
+
+#pragma region 自機と敵弾の衝突判定
+	for (PlayerBullet* pBullet : playerBullets) {
+		posA = pBullet->GetWorldPositoin();
+
+		for (EnemyBullet* eBullet : enemyBullets) {
+			posB = eBullet->GetWorldPositoin();
+
+			distance = VectorFunction::length(posA - posB);
+			if (distance < enemyBulletSize + playerBulletSize) {
+				pBullet->OnCollision();
+				eBullet->OnCollision();
+			}
+		}
+	}
 
 #pragma endregion
 }

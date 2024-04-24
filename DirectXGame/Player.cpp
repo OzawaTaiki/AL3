@@ -89,6 +89,8 @@ Vector3 Player::GetWorldPositoin() {
 	return worldPos;
 }
 
+void Player::OnCollision() {}
+
 void Player::rotate() {
 	if (input->PushKey(DIK_A)) {
 		worldTransform.rotation_.y -= 0.02f;

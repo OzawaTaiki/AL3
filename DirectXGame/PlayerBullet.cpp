@@ -15,7 +15,6 @@ void PlayerBullet::initialize(Model* _model, const Vector3& _position, const Vec
 
 void PlayerBullet::Update() {
 
-
 	if (--deathTimer <= 0) {
 		isDead = true;
 	}
@@ -24,3 +23,15 @@ void PlayerBullet::Update() {
 }
 
 void PlayerBullet::Draw(const ViewProjection& _viewProjection) { model->Draw(worldTransform, _viewProjection, textureHandle); }
+
+void PlayerBullet::OnCollision() { isDead = true; }
+
+Vector3 PlayerBullet::GetWorldPositoin() {
+	Vector3 worldPos;
+
+	worldPos.x = worldTransform.translation_.x;
+	worldPos.y = worldTransform.translation_.y;
+	worldPos.z = worldTransform.translation_.z;
+
+	return worldPos;
+}
