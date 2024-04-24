@@ -115,10 +115,10 @@ void GameScene::Draw() {
 
 void GameScene::CheckAllCollisions() {
 
-	const float playerSize = 1.0f;
-	const float enemySize = 1.0f;
-	const float playerBulletSize = 1.0f;
-	const float enemyBulletSize = 1.0f;
+	const float playerSize = 1.1f;
+	const float enemySize = 1.1f;
+	const float playerBulletSize = 1.1f;
+	const float enemyBulletSize = 1.1f;
 	Vector3 posA, posB;
 
 	const std::list<PlayerBullet*>& playerBullets = player->GetBullets();

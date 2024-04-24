@@ -33,7 +33,7 @@ private:
 	Input* input = nullptr;
 
 	const float kRotSpeed = 0.02f;      // 回転の速さ
-	const float kCharacterSpeed = 0.2f; // キャラクターの速さ
+	const float kCharacterSpeed = 0.1f; // キャラクターの速さ
 
 	const float radius = 2.0f;
 
