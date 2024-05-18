@@ -9,7 +9,10 @@ GameScene::~GameScene() {
 	delete playerModel;
 	delete player;
 	delete enemy;
+	delete enemyModel;
 	delete debugCamera;
+	delete skydoom;
+	delete modelSkydoom;
 }
 
 void GameScene::Initialize() {
@@ -25,6 +28,10 @@ void GameScene::Initialize() {
 	enemyModel = Model::Create();
 
 	viewProjection.Initialize();
+
+	skydoom = new Skydoom();
+	modelSkydoom = Model::CreateFromOBJ("skydoom", true);
+	skydoom->Initialze(modelSkydoom);
 
 	player = new Player();
 	player->Initialize(playerModel, playerTextrueHandle);
@@ -42,12 +49,13 @@ void GameScene::Initialize() {
 
 void GameScene::Update() {
 #ifdef _DEBUG
-	if (input_->PushKey(DIK_0))
+	if (input_->TriggerKey(DIK_0))
 		debugCameraActive = debugCameraActive ? false : true;
 	if (input_->PushKey(DIK_1))
 		enemy->SetTranslete(Vector3(5, 2, 20));
 
 #endif // _DEBUG
+	skydoom->Update();
 
 	player->Update();
 	if (enemy)
@@ -90,6 +98,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
+
+	skydoom->Draw(viewProjection);
 
 	player->Draw(viewProjection);
 	if (enemy)

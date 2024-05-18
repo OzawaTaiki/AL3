@@ -10,6 +10,7 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "skydoom.h"
 
 /// <summary>
 /// ゲームシーン
@@ -65,11 +66,13 @@ private: // メンバ変数
 	Player* player = nullptr;
 	Enemy* enemy = nullptr;
 
+	Skydoom* skydoom = nullptr;
+	Model* modelSkydoom = nullptr;
+
+
 	bool debugCameraActive = false;
 	DebugCamera* debugCamera = nullptr;
 
-	//関数
+	// 関数
 	void CheckAllCollisions();
-
-
 };
