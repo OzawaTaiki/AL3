@@ -28,6 +28,8 @@ public:
 	void InitializeApproachPhase();
 	void UpdateApproachPhase();
 
+	Vector3 GetWorldPosition();
+
 	static const int kFireInterval = 60;
 
 private:

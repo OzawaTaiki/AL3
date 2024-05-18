@@ -67,6 +67,15 @@ void Enemy::UpdateApproachPhase() {
 	}
 }
 
+Vector3 Enemy::GetWorldPosition() {
+	Vector3 worldPos;
+	worldPos.x = worldTransform.matWorld_.m[3][0];
+	worldPos.y = worldTransform.matWorld_.m[3][1];
+	worldPos.z = worldTransform.matWorld_.m[3][2];
+
+	return worldPos;
+}
+
 void Enemy::Imgui() {
 	ImGui::Begin("Enemy");
 	ImGui::DragFloat3("Translation", &worldTransform.translation_.x, 0.1f);
@@ -83,7 +92,7 @@ void Enemy::ApproachPhase() {
 	Vector3 velocity(0, 0, -0.1f);
 	worldTransform.translation_ += velocity;
 	if (worldTransform.translation_.z < 0.0f) {
-		//phase = phaseTable[(int)Phase::Leave];
+		// phase = phaseTable[(int)Phase::Leave];
 	}
 }
 
@@ -92,7 +101,7 @@ void Enemy::Fire() {
 	Vector3 velocity(0, 0, -kBulletSpeed);
 
 	Vector3 pPos = player->GetWorldPositoin();
-	Vector3 ePos = worldTransform.translation_;
+	Vector3 ePos = GetWorldPosition();
 
 	Vector3 e2pVect = pPos - ePos;
 	Vector3 normVect = VectorFunction::Normalize(e2pVect);
