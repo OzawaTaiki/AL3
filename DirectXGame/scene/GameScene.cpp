@@ -293,7 +293,7 @@ void GameScene::UpdataEnemyPopCommands() {
 			isWaiting = true;
 			enemyPopWaitTime = waitTime;
 
-			// コマンドループを抜ける
+			// コマンドループを抜ける 重要！！！！
 			break;
 		}
 	}
