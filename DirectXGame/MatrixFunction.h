@@ -5,8 +5,7 @@
 static const int kRowHeight = 20;
 static const int kColumnWidth = 60;
 
-class MatrixFunction
-{
+class MatrixFunction {
 public:
 	static Matrix4x4 Add(const Matrix4x4& _m1, const Matrix4x4& _m2);
 	static Matrix4x4 Subtract(const Matrix4x4& _m1, const Matrix4x4& _m2);
@@ -25,3 +24,7 @@ public:
 	static Matrix4x4 MakeOrthographicMatrix(float _left, float _top, float _right, float _bottom, float _nearClip, float _farClip);
 	static Matrix4x4 MakeViewportMatrix(float _left, float _top, float _width, float _height, float _minDepth, float _maxDepth);
 };
+
+Matrix4x4  operator+(const Matrix4x4& _m1, const Matrix4x4& _m2);
+Matrix4x4  operator-(const Matrix4x4& _m1, const Matrix4x4& _m2);
+Matrix4x4  operator*(const Matrix4x4& _m1, const Matrix4x4& _m2);

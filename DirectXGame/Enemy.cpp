@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "GameScene.h"
 #include "ImGuiManager.h"
 #include "Player.h"
 #include "VectorFunction.h"
@@ -6,12 +7,7 @@
 
 void (Enemy::*Enemy::phaseTable[])() = {&Enemy::ApproachPhase, &Enemy::LeavePhase};
 
-Enemy::~Enemy() {
-	for (EnemyBullet* nBullet : bullets) {
-		delete nBullet;
-	}
-	bullets.clear();
-}
+Enemy::~Enemy() {}
 
 void Enemy::Initialize(Model* _model, uint32_t _textrueHandle) {
 	// NULLチェック
@@ -27,36 +23,18 @@ void Enemy::Initialize(Model* _model, uint32_t _textrueHandle) {
 
 void Enemy::Update() {
 
-	bullets.remove_if([](EnemyBullet* bullet) {
-		if (bullet->IsDead()) {
-			delete bullet;
-			return true;
-		}
-		return false;
-	});
-
-	//(this->*Enemy::phase)();
+	(this->*Enemy::phase)();
 
 	worldTransform.UpdateMatrix();
 
 	UpdateApproachPhase();
 
-	for (EnemyBullet* nBullet : bullets) {
-		nBullet->Update();
-	}
-
 	Imgui();
 }
 
-void Enemy::Draw(ViewProjection& _viewProjection) {
-	model->Draw(worldTransform, _viewProjection, textureHandle);
-	for (EnemyBullet* nBullet : bullets) {
-		nBullet->Draw(_viewProjection);
-	}
-}
+void Enemy::Draw(ViewProjection& _viewProjection) { model->Draw(worldTransform, _viewProjection, textureHandle); }
 
 void Enemy::SetTranslete(const Vector3& _translation) { worldTransform.translation_ = _translation; }
-
 
 void Enemy::InitializeApproachPhase() { fireTimer = kFireInterval; }
 
@@ -78,15 +56,15 @@ void Enemy::Imgui() {
 }
 
 void Enemy::LeavePhase() {
-	Vector3 velocity = {0, 0, -0.3f};
-	worldTransform.translation_ -= velocity;
+	Vector3 velocity = {0.3f, 0.3f, 0.0f};
+	worldTransform.translation_ += velocity;
 }
 void Enemy::ApproachPhase() {
 
 	Vector3 velocity(0, 0, -0.1f);
 	worldTransform.translation_ += velocity;
 	if (worldTransform.translation_.z < 0.0f) {
-		//phase = phaseTable[(int)Phase::Leave];
+		phase = phaseTable[(int)Phase::Leave];
 	}
 }
 
@@ -104,15 +82,16 @@ void Enemy::Fire() {
 	EnemyBullet* newBullet = new EnemyBullet();
 	newBullet->initialize(model, worldTransform.translation_, velocity);
 
-	bullets.push_back(newBullet);
+	if (gameScene)
+		gameScene->AddEnemyBullet(newBullet);
 }
 
 Vector3 Enemy::GetWorldPositoin() {
 	Vector3 worldPos;
 
-	worldPos.x = worldTransform.translation_.x;
-	worldPos.y = worldTransform.translation_.y;
-	worldPos.z = worldTransform.translation_.z;
+	worldPos.x = worldTransform.matWorld_.m[3][0];
+	worldPos.y = worldTransform.matWorld_.m[3][1];
+	worldPos.z = worldTransform.matWorld_.m[3][2];
 
 	return worldPos;
 }

@@ -9,7 +9,7 @@ void Skydoom::Initialze(Model* _model) {
 	assert(_model);
 	model = _model;
 	worldTransform.Initialize();
-	worldTransform.scale_ = {100.0f, 100.0f, 100.0f};
+	worldTransform.scale_ = {500.0f, 500.0f, 500.0f};
 }
 
 void Skydoom::Update() {

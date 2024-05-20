@@ -10,7 +10,7 @@ class Player {
 public:
 	~Player();
 
-	void Initialize(Model* _model, uint32_t _textrueHandle);
+	void Initialize(Model* _model, uint32_t _textrueHandle, const Vector3& _pos = {0, 0, 0});
 	void Update();
 	void Draw(ViewProjection& _viewProjection);
 
@@ -19,6 +19,11 @@ public:
 
 	void OnCollision();
 
+	/// <summary>
+	/// 親となるワールドトランスフォームをセット
+	/// </summary>
+	/// <param name="_parent">親となるワールドトランスフォーム</param>
+	void SetParent(const WorldTransform* _parent) { worldTransform.parent_ = _parent; };
 
 private:
 	// 旋回

@@ -7,6 +7,7 @@
 #include "WorldTransform.h"
 
 class Player;
+class GameScene;
 
 class Enemy {
 
@@ -14,7 +15,6 @@ class Enemy {
 		Approach, // 接近する
 		Leave     // 離脱する
 	};
-
 
 public:
 	~Enemy();
@@ -26,7 +26,6 @@ public:
 	void SetTranslete(const Vector3& _translation);
 	void SetPlayer(Player* _player) { player = _player; };
 
-	const std::list<EnemyBullet*>& GetBullets() const { return bullets; };
 	Vector3 GetWorldPositoin();
 
 	void InitializeApproachPhase();
@@ -34,6 +33,7 @@ public:
 
 	void OnCollision();
 
+	void SetGameScene(GameScene* _gameScene) { gameScene = _gameScene; }
 
 	static const int kFireInterval = 60;
 
@@ -54,11 +54,10 @@ private:
 	Model* model = nullptr;
 	uint32_t textureHandle = 0;
 
-	std::list<EnemyBullet*> bullets;
 	int32_t fireTimer = 0;
 
 	Player* player = nullptr;
+	GameScene* gameScene = nullptr;
 
 	const float radius = 2.0f;
 };
-

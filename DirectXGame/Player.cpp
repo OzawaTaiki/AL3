@@ -10,10 +10,11 @@ Player::~Player() {
 	bullets.clear();
 }
 
-void Player::Initialize(Model* _model, uint32_t _textrueHandle) {
+void Player::Initialize(Model* _model, uint32_t _textrueHandle, const Vector3& _pos) {
 	// NULLチェック
 	assert(_model);
 	model = _model;
+	worldTransform.translation_ = _pos;
 	textureHandle = _textrueHandle;
 	// ワールドトランス初期化
 	worldTransform.Initialize();
@@ -68,8 +69,9 @@ void Player::Update() {
 	VectorFunction::Clamp(worldTransform.translation_, minLine, maxLine);
 
 	// 行列更新
-	worldTransform.matWorld_ = MatrixFunction::MakeAffineMatrix(worldTransform.scale_, worldTransform.rotation_, worldTransform.translation_);
-	worldTransform.TransferMatrix();
+	worldTransform.UpdateMatrix();
+	//worldTransform.matWorld_ = MatrixFunction::MakeAffineMatrix(worldTransform.scale_, worldTransform.rotation_, worldTransform.translation_);
+	//worldTransform.TransferMatrix();
 }
 
 void Player::Draw(ViewProjection& _viewProjection) {
@@ -82,9 +84,9 @@ void Player::Draw(ViewProjection& _viewProjection) {
 Vector3 Player::GetWorldPositoin() {
 	Vector3 worldPos;
 
-	worldPos.x = worldTransform.translation_.x;
-	worldPos.y = worldTransform.translation_.y;
-	worldPos.z = worldTransform.translation_.z;
+	worldPos.x = worldTransform.matWorld_.m[3][0];
+	worldPos.y = worldTransform.matWorld_.m[3][1];
+	worldPos.z = worldTransform.matWorld_.m[3][2];
 
 	return worldPos;
 }
@@ -108,7 +110,7 @@ void Player::Attack() {
 		velocity = VectorFunction::TransformNormal(velocity, worldTransform.matWorld_);
 
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->initialize(model, worldTransform.translation_, velocity);
+		newBullet->initialize(model, GetWorldPositoin(), velocity);
 
 		bullets.push_back(newBullet);
 	}
