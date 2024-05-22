@@ -63,6 +63,7 @@ private: // メンバ変数
 	// テクスチャハンドル
 	uint32_t playerTextrueHandle = 0;
 	uint32_t enemyTextrueHandle = 0;
+	uint32_t textuerReticle = 0;
 
 	// 3Dモデルデータ
 	Model* playerModel = nullptr;
@@ -85,9 +86,9 @@ private: // メンバ変数
 
 	std::stringstream enemyPopCommands;
 
-	//待機タイマー
+	// 待機タイマー
 	uint32_t enemyPopWaitTime;
-	//待機中フラグ
+	// 待機中フラグ
 	bool isWaiting;
 
 	// 関数

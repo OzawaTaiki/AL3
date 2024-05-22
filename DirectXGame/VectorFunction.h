@@ -18,7 +18,8 @@ public:
 	static Vector3 TransformNormal(const Vector3& _v, const Matrix4x4& _m);
 };
 
-Vector3& operator+=( Vector3& _v1, const Vector3& _v2);
-Vector3& operator-=( Vector3& _v1, const Vector3& _v2);
-Vector3 operator-(Vector3& _v1, const Vector3& _v2);
-Vector3 operator*(Vector3& _v1, float _k);
+Vector3& operator+=(Vector3& _v1, const Vector3& _v2);
+Vector3& operator-=(Vector3& _v1, const Vector3& _v2);
+Vector3 operator+(const Vector3& _v1, const Vector3& _v2);
+Vector3 operator-(const Vector3& _v1, const Vector3& _v2);
+Vector3 operator*(const Vector3& _v1, float _k);

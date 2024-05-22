@@ -96,10 +96,7 @@ void VectorFunction::Clamp(Vector3& _value, const Vector3& _min, const Vector3& 
 }
 
 Vector3 VectorFunction::TransformNormal(const Vector3& _v, const Matrix4x4& _m) {
-	Vector3 result{
-	    _v.x * _m.m[0][0] + _v.y * _m.m[1][0] + _v.z * _m.m[2][0], 
-		_v.x * _m.m[0][1] + _v.y * _m.m[1][1] + _v.z * _m.m[2][1],
-	    _v.x * _m.m[0][2] + _v.y * _m.m[1][2] + _v.z * _m.m[2][2]};
+	Vector3 result{_v.x * _m.m[0][0] + _v.y * _m.m[1][0] + _v.z * _m.m[2][0], _v.x * _m.m[0][1] + _v.y * _m.m[1][1] + _v.z * _m.m[2][1], _v.x * _m.m[0][2] + _v.y * _m.m[1][2] + _v.z * _m.m[2][2]};
 	return result;
 }
 
@@ -107,6 +104,8 @@ Vector3& operator+=(Vector3& _v1, const Vector3& _v2) { return _v1 = Vector3(_v1
 
 Vector3& operator-=(Vector3& _v1, const Vector3& _v2) { return _v1 = Vector3(_v1.x - _v2.x, _v1.y - _v2.y, _v1.z - _v2.z); }
 
-Vector3 operator-(Vector3& _v1, const Vector3& _v2) { return Vector3(_v1.x - _v2.x, _v1.y - _v2.y, _v1.z - _v2.z); }
+Vector3 operator+(const Vector3& _v1, const Vector3& _v2) { return Vector3(_v1.x + _v2.x, _v1.y + _v2.y, _v1.z + _v2.z); }
 
-Vector3 operator*(Vector3& _v1, float _k) { return Vector3(_v1.x * _k, _v1.y * _k, _v1.z * _k); }
+Vector3 operator-(const Vector3& _v1, const Vector3& _v2) { return Vector3(_v1.x - _v2.x, _v1.y - _v2.y, _v1.z - _v2.z); }
+
+Vector3 operator*(const Vector3& _v1, float _k) { return Vector3(_v1.x * _k, _v1.y * _k, _v1.z * _k); }

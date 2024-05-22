@@ -30,6 +30,7 @@ void GameScene::Initialize() {
 
 	playerTextrueHandle = TextureManager::Load("uvChecker.png");
 	enemyTextrueHandle = TextureManager::Load("axis/axis.jpg");
+	textuerReticle = TextureManager::Load("2DReticle.png");
 
 	playerModel = Model::Create();
 	enemyModel = Model::Create();
@@ -47,7 +48,7 @@ void GameScene::Initialize() {
 
 	player = new Player();
 	Vector3 playerPos(0, 0, 15.0f);
-	player->Initialize(playerModel, playerTextrueHandle, playerPos);
+	player->Initialize(playerModel, playerTextrueHandle, textuerReticle, playerPos);
 	player->SetParent(&railCamera->GetWorldTransform());
 
 	debugCamera = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
@@ -74,7 +75,7 @@ void GameScene::Update() {
 
 	skydoom->Update();
 
-	player->Update();
+	player->Update(viewProjection);
 
 	for (Enemy* nEnemy : enemy) {
 		nEnemy->Update();
@@ -154,6 +155,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+
+	player->DrawUI();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
