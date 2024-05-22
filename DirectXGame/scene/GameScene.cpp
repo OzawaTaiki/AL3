@@ -90,7 +90,7 @@ void GameScene::Update() {
 		return false;
 	});
 
-	UpdataEnemyPopCommands();
+	//UpdataEnemyPopCommands();
 
 	if (debugCameraActive) {
 		debugCamera->Update();
