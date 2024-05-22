@@ -69,7 +69,7 @@ void GameScene::Update() {
 #endif // _DEBUG
 
 	Vector3 railCameraPos = {0, 0, 0};
-	Vector3 railCameraRota = {0.0f, 0.001f, 0};
+	Vector3 railCameraRota = {0.0f, 0.00f, 0};
 	railCamera->Update(railCameraPos, railCameraRota);
 
 	skydoom->Update();
