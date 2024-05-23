@@ -2,10 +2,10 @@
 #include "Input.h"
 #include "Model.h"
 #include "PlayerBullet.h"
+#include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include <list>
-#include "Sprite.h"
 
 class Player {
 public:
@@ -31,11 +31,15 @@ public:
 private:
 	// 旋回
 	void rotate();
+	// 移動
+	void Move();
 	// 射撃
 	void Attack();
 
 	void Update3DReticle();
 	void Update2DReticle(ViewProjection& _viewProjection);
+
+	void ScreenToWorld(ViewProjection& _viewProjection);
 
 	WorldTransform worldTransform;
 	Model* model = nullptr;
@@ -53,7 +57,6 @@ private:
 	WorldTransform woldTransform3DReticle;
 	uint32_t texture3DReticle = 0;
 	Sprite* sprite2DReticle = nullptr;
-
 
 #ifdef _DEBUG
 	void ImGui();
