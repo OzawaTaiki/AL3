@@ -68,9 +68,13 @@ void GameScene::Update() {
 		//	enemy->SetTranslete(Vector3(5, 2, 20));
 
 #endif // _DEBUG
+	if (input_->TriggerKey(DIK_R)) {
+		LoadEnemyPopData();
+	}
+	Enemy::num = 0;
 
 	Vector3 railCameraPos = {0, 0, 0};
-	Vector3 railCameraRota = {0.0f, 0.00f, 0};
+	Vector3 railCameraRota = {0.0f, 0.002f, 0};
 	railCamera->Update(railCameraPos, railCameraRota);
 
 	skydoom->Update();
@@ -78,8 +82,15 @@ void GameScene::Update() {
 	player->Update(viewProjection);
 
 	for (Enemy* nEnemy : enemy) {
-		nEnemy->Update();
+		nEnemy->Update();		
 	}
+	enemy.remove_if([](Enemy* enemy) {
+		if (!enemy->GetIsAlive()) {
+			delete enemy;
+			return true;
+		}
+		return false;
+	});
 	for (EnemyBullet* nBullet : enemyBullet) {
 		nBullet->Update();
 	}
@@ -105,6 +116,7 @@ void GameScene::Update() {
 	}
 
 	CheckAllCollisions();
+
 }
 
 void GameScene::Draw() {
@@ -229,6 +241,7 @@ void GameScene::LoadEnemyPopData() {
 	file.open("Resources/data/enemyPopData.csv");
 	assert(file.is_open());
 
+	enemyPopCommands.clear();
 	// ファイルの内容を文字列ストリームにコピー
 	enemyPopCommands << file.rdbuf();
 

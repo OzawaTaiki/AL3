@@ -15,6 +15,7 @@ public:
 
 private:
 	void Imgui();
+	bool isStop;
 
 	// ワールド変換データ
 	WorldTransform worldTransform;

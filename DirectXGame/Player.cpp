@@ -146,7 +146,7 @@ void Player::Attack() {
 	// ゲームパッドの状態を得る変数(XINPUT)
 	XINPUT_STATE joyState;
 
-	if (input->TriggerKey(DIK_SPACE) || (Input::GetInstance()->GetJoystickState(0, joyState) && (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER))) {
+	if (input->PushKey(DIK_SPACE) || (Input::GetInstance()->GetJoystickState(0, joyState) && (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER))) {
 
 		const float kBulletSpeed = 1.0f;
 		Vector3 velocity(0, 0, kBulletSpeed);
@@ -218,6 +218,7 @@ void Player::ScreenToWorld(ViewProjection& _viewProjection) {
 	// ビュープロジェクションビューポート合成行列
 	Matrix4x4 matViewport = MatrixFunction::MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
 	Matrix4x4 matVPV = _viewProjection.matView * _viewProjection.matProjection * matViewport;
+	Matrix4x4 matVPV1 = matViewport * _viewProjection.matProjection * _viewProjection.matView;
 	// 合成行列の逆行列を計算する
 	Matrix4x4 matInverseVPV = MatrixFunction::Inverse(matVPV);
 

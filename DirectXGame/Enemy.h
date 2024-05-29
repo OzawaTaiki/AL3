@@ -27,6 +27,7 @@ public:
 	void SetPlayer(Player* _player) { player = _player; };
 
 	Vector3 GetWorldPositoin();
+	bool GetIsAlive() { return isAlive; };
 
 	void InitializeApproachPhase();
 	void UpdateApproachPhase();
@@ -36,6 +37,7 @@ public:
 	void SetGameScene(GameScene* _gameScene) { gameScene = _gameScene; }
 
 	static const int kFireInterval = 60;
+	static int num;
 
 private:
 #ifdef _DEBUG
@@ -60,4 +62,6 @@ private:
 	GameScene* gameScene = nullptr;
 
 	const float radius = 2.0f;
+	bool isAlive;
+	bool isStop;
 };

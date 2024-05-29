@@ -5,6 +5,8 @@
 #include "VectorFunction.h"
 #include <cassert>
 
+int Enemy::num = 0;
+
 void (Enemy::*Enemy::phaseTable[])() = {&Enemy::ApproachPhase, &Enemy::LeavePhase};
 
 Enemy::~Enemy() {}
@@ -17,22 +19,28 @@ void Enemy::Initialize(Model* _model, uint32_t _textrueHandle) {
 	// ワールドトランス初期化
 	worldTransform.Initialize();
 	phase = phaseTable[(int)Phase::Approach];
-
+	isAlive = true;
+	isStop = false;
 	InitializeApproachPhase();
 }
 
 void Enemy::Update() {
+	if (!isAlive)
+		return;
 
-	(this->*Enemy::phase)();
+	if (!isStop)
+		(this->*Enemy::phase)();
 
 	worldTransform.UpdateMatrix();
 
-	UpdateApproachPhase();
 
 	Imgui();
 }
 
-void Enemy::Draw(ViewProjection& _viewProjection) { model->Draw(worldTransform, _viewProjection, textureHandle); }
+void Enemy::Draw(ViewProjection& _viewProjection) {
+	if (isAlive)
+		model->Draw(worldTransform, _viewProjection, textureHandle);
+}
 
 void Enemy::SetTranslete(const Vector3& _translation) { worldTransform.translation_ = _translation; }
 
@@ -46,12 +54,17 @@ void Enemy::UpdateApproachPhase() {
 	}
 }
 
-void Enemy::OnCollision() {}
+void Enemy::OnCollision() { isAlive = false; }
 
 void Enemy::Imgui() {
-	ImGui::Begin("Enemy");
+
+	std::string title = "Enemy" + std::to_string(num++);
+
+	ImGui::SetNextWindowSize(ImVec2(300, 100));
+	ImGui::Begin(title.c_str());
 	ImGui::DragFloat3("Translation", &worldTransform.translation_.x, 0.1f);
 	ImGui::Text("%s", phase == phaseTable[0] ? "Approach" : "Leave");
+	ImGui::Checkbox("IsStop", &isStop);
 	ImGui::End();
 }
 
@@ -66,6 +79,7 @@ void Enemy::ApproachPhase() {
 	if (worldTransform.translation_.z < 0.0f) {
 		phase = phaseTable[(int)Phase::Leave];
 	}
+	UpdateApproachPhase();
 }
 
 void Enemy::Fire() {
