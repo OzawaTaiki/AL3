@@ -29,7 +29,7 @@ void Player::Initialize(Model* _model, uint32_t _textrueHandle, uint32_t _reticl
 	input = Input::GetInstance();
 }
 
-void Player::Update(ViewProjection& _viewProjection) {
+void Player::Update(const ViewProjection& _viewProjection) {
 
 #ifdef _DEBUG
 	ImGui();
@@ -60,7 +60,7 @@ void Player::Update(ViewProjection& _viewProjection) {
 	if (input->PushKey(DIK_DOWN)) {
 		move.y -= kCharacterSpeed;
 	}
-	move = VectorFunction::Normalize(move)*kCharacterSpeed;
+	move = VectorFunction::Normalize(move) * kCharacterSpeed;
 
 	Attack();
 	for (PlayerBullet* bullet : bullets) {
@@ -90,7 +90,7 @@ void Player::Draw(ViewProjection& _viewProjection) {
 		bullet->Draw(_viewProjection);
 	}
 
-	//model->Draw(woldTransform3DReticle, _viewProjection, texture3DReticle);
+	model->Draw(woldTransform3DReticle, _viewProjection, texture3DReticle);
 }
 
 void Player::DrawUI() { sprite2DReticle->Draw(); }
@@ -151,7 +151,7 @@ void Player::Update3DReticle() {
 	woldTransform3DReticle.UpdateMatrix();
 }
 
-void Player::Update2DReticle(ViewProjection& _viewProjection) {
+void Player::Update2DReticle(const ViewProjection& _viewProjection) {
 
 	Vector3 positionReticle = Get3DReticleWorldPositoin();
 

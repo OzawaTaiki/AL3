@@ -2,17 +2,17 @@
 #include "Input.h"
 #include "Model.h"
 #include "PlayerBullet.h"
+#include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include <list>
-#include "Sprite.h"
 
 class Player {
 public:
 	~Player();
 
 	void Initialize(Model* _model, uint32_t _textrueHandle, uint32_t _reticleTextrueHandle, const Vector3& _pos = {0, 0, 0});
-	void Update(ViewProjection& _viewProjection);
+	void Update(const ViewProjection& _viewProjection);
 	void Draw(ViewProjection& _viewProjection);
 	void DrawUI();
 
@@ -35,7 +35,7 @@ private:
 	void Attack();
 
 	void Update3DReticle();
-	void Update2DReticle(ViewProjection& _viewProjection);
+	void Update2DReticle(const ViewProjection& _viewProjection);
 
 	WorldTransform worldTransform;
 	Model* model = nullptr;
@@ -53,7 +53,6 @@ private:
 	WorldTransform woldTransform3DReticle;
 	uint32_t texture3DReticle = 0;
 	Sprite* sprite2DReticle = nullptr;
-
 
 #ifdef _DEBUG
 	void ImGui();
