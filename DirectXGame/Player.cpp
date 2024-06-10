@@ -8,7 +8,6 @@ Player::~Player() {
 		delete bullet;
 	}
 	bullets.clear();
-
 }
 
 void Player::Initialize(Model* _model, uint32_t _textrueHandle) {
@@ -18,7 +17,6 @@ void Player::Initialize(Model* _model, uint32_t _textrueHandle) {
 	textureHandle = _textrueHandle;
 	// ワールドトランス初期化
 	worldTransform.Initialize();
-
 	input = Input::GetInstance();
 }
 
