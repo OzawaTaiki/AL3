@@ -218,7 +218,6 @@ void Player::ScreenToWorld(ViewProjection& _viewProjection) {
 	// ビュープロジェクションビューポート合成行列
 	Matrix4x4 matViewport = MatrixFunction::MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
 	Matrix4x4 matVPV = _viewProjection.matView * _viewProjection.matProjection * matViewport;
-	Matrix4x4 matVPV1 = matViewport * _viewProjection.matProjection * _viewProjection.matView;
 	// 合成行列の逆行列を計算する
 	Matrix4x4 matInverseVPV = MatrixFunction::Inverse(matVPV);
 
@@ -250,8 +249,8 @@ void Player::ScreenToWorld(ViewProjection& _viewProjection) {
 
 void Player::ImGui() {
 	ImGui::Begin("Player");
-	ImGui::Text("Scale", &worldTransform.scale_.x, 0.1f);
-	ImGui::Text("Rotation", &worldTransform.rotation_.x, 0.1f);
-	ImGui::Text("Translation", &worldTransform.translation_.x, 0.1f);
+	ImGui::DragFloat3("Scale", &worldTransform.scale_.x, 0.1f);
+	ImGui::DragFloat3("Rotation", &worldTransform.rotation_.x, 0.1f);
+	ImGui::DragFloat3("Translation", &worldTransform.translation_.x, 0.1f);
 	ImGui::End();
 }
