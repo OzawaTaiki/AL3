@@ -4,6 +4,7 @@
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "BaseEnemyState.h"
 
 class Enemy {
 
@@ -17,19 +18,26 @@ public:
 	void Update();
 	void Draw(ViewProjection& _viewProjection);
 
-	void SetTranslete(const Vector3& _translation);
+	void AddVelocity(const Vector3& _velocity);
+
+	void SetTranslate(const Vector3& _translate);
+	void ChangeState(std::unique_ptr<BaseEnemyState> _state);
+
+	Vector3 GetWorldPos();
 
 private:
 #ifdef _DEBUG
 	void Imgui();
 #endif // _DEBUG
 
-	void LeavePhase();
-	void ApproachPhase();
+	//void LeavePhase();
+	//void ApproachPhase();
 
 
-	void (Enemy::*phase)();
-	static void (Enemy::*phaseTable[])();
+	//void (Enemy::*phase)();
+	//static void (Enemy::*phaseTable[])();
+
+	std ::unique_ptr<BaseEnemyState> state;
 
 	WorldTransform worldTransform;
 	Model* model = nullptr;

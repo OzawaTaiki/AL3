@@ -105,3 +105,5 @@ Vector3 VectorFunction::TransformNormal(const Vector3& _v, const Matrix4x4& _m) 
 Vector3& operator+=(Vector3& _v1, const Vector3& _v2) { return _v1 = Vector3(_v1.x + _v2.x, _v1.y + _v2.y, _v1.z + _v2.z); }
 
 Vector3& operator-=(Vector3& _v1, const Vector3& _v2) { return _v1 = Vector3(_v1.x - _v2.x, _v1.y - _v2.y, _v1.z - _v2.z); }
+
+Vector3 operator-(Vector3& _v) { return Vector3(-_v.x, -_v.y, -_v.z); }

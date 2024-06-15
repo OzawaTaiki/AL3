@@ -7,12 +7,13 @@ class Enemy;
 class BaseEnemyState {
 public:
 	BaseEnemyState(const std::string& _name, Enemy* _enemy) : name(_name), enemy(_enemy){};
+	virtual ~BaseEnemyState() = default;
 
 	// 毎フレーム処理(純粋仮想関数)
 	virtual void Update() = 0;
 
 	// デバッグログ出カ
-	virtual void DebugLog();
+	virtual std::string DebugLog();
 
 protected:
 	// 状態名

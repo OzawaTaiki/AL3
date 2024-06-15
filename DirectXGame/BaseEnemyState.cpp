@@ -1,4 +1,7 @@
 #include "BaseEnemyState.h"
 #include <Windows.h>
 
-void BaseEnemyState::DebugLog() { OutputDebugStringA(name.c_str()); }
+std::string BaseEnemyState::DebugLog() {
+	OutputDebugStringA(name.c_str());
+	return name;
+}
