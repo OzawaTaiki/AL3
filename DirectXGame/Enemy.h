@@ -5,6 +5,8 @@
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include <list>
+#include "TimedCall.h"
 
 class Enemy {
 
@@ -25,21 +27,19 @@ public:
 	void InitializeApproachPhase();
 	void UpdateApproachPhase();
 
+	void ShootAndResetTimer();
+
 	static const int kFireInterval = 60;
 
 private:
-#ifdef _DEBUG
-	void Imgui();
-#endif // _DEBUG
-
 	void LeavePhase();
 	void ApproachPhase();
-	
-
 
 	void Fire();
 
-	void (Enemy::*phase)();
+	std::list<TimedCall*> timedCall;
+
+	    void (Enemy::*phase)();
 	static void (Enemy::*phaseTable[])();
 
 	WorldTransform worldTransform;
@@ -49,4 +49,7 @@ private:
 	std::list<EnemyBullet*> bullets;
 	int32_t fireTimer = 0;
 
+#ifdef _DEBUG
+	void Imgui();
+#endif // _DEBUG
 };

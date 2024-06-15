@@ -10,6 +10,11 @@ Enemy::~Enemy() {
 		delete nBullet;
 	}
 	bullets.clear();
+
+	for (TimedCall* TC : timedCall) {
+		delete TC;
+	}
+	timedCall.clear();
 }
 
 void Enemy::Initialize(Model* _model, uint32_t _textrueHandle) {
@@ -22,6 +27,7 @@ void Enemy::Initialize(Model* _model, uint32_t _textrueHandle) {
 	phase = phaseTable[(int)Phase::Approach];
 
 	InitializeApproachPhase();
+	ShootAndResetTimer();
 }
 
 void Enemy::Update() {
@@ -38,7 +44,17 @@ void Enemy::Update() {
 
 	worldTransform.UpdateMatrix();
 
-	UpdateApproachPhase();
+	timedCall.remove_if([](TimedCall* _timedCall) {
+		if (_timedCall->IsFinished()) {
+			delete _timedCall;
+			return true;
+		}
+		return false;
+	});
+
+	for (TimedCall* TC : timedCall) {
+		TC->Update();
+	}
 
 	for (EnemyBullet* nBullet : bullets) {
 		nBullet->Update();
@@ -58,12 +74,19 @@ void Enemy::SetTranslete(const Vector3& _translation) { worldTransform.translati
 
 void Enemy::InitializeApproachPhase() { fireTimer = kFireInterval; }
 
-void Enemy::UpdateApproachPhase() {
-	fireTimer--;
-	if (fireTimer <= 0) {
-		Fire();
-		fireTimer = kFireInterval;
+void Enemy::UpdateApproachPhase() { ShootAndResetTimer(); }
+
+void Enemy::ShootAndResetTimer() {
+
+	// timedCallが空でない場合、つまり前の発射の予約が存在する場合
+	if (!timedCall.empty()) {
+		// 最後のTimedCallオブジェクトが完了していない場合は何もしない
+		if (!timedCall.back()->IsFinished()) {
+			return;
+		}
 	}
+	Fire();
+	timedCall.push_back(new TimedCall(std::bind(&Enemy::ShootAndResetTimer, this), kFireInterval));
 }
 
 void Enemy::Imgui() {
@@ -74,14 +97,15 @@ void Enemy::Imgui() {
 }
 
 void Enemy::LeavePhase() {
-	Vector3 velocity = {0, 0, -0.3f};
-	worldTransform.translation_ -= velocity;
+	Vector3 velocity = {0.3f, 0.2f, -0.2f};
+	worldTransform.translation_ += velocity;
 }
 void Enemy::ApproachPhase() {
 
 	Vector3 velocity(0, 0, -0.1f);
 	worldTransform.translation_ += velocity;
-	if (worldTransform.translation_.z < 0.0f) {
+	UpdateApproachPhase();
+	if (worldTransform.translation_.z < -10.0f) {
 		phase = phaseTable[(int)Phase::Leave];
 	}
 }
