@@ -35,7 +35,7 @@ void Enemy::Update() {
 		return false;
 	});
 
-	(this->*Enemy::phase)();
+	//(this->*Enemy::phase)();
 
 	worldTransform.UpdateMatrix();
 

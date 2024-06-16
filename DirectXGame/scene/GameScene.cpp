@@ -31,7 +31,7 @@ void GameScene::Initialize() {
 
 	enemy = new Enemy();
 	enemy->Initialize(enemyModel, enemyTextrueHandle);
-	enemy->SetTranslete(Vector3(0, 2, 20));
+	enemy->SetTranslete(Vector3(10, 2, 20));
 
 	enemy->SetPlayer(player);
 
