@@ -30,6 +30,8 @@ void EnemyBullet::Update() {
 	}
 	worldTransform.translation_ += velocity;
 	
+	//TODO: p1~ 何も手つけてない
+
 	worldTransform.UpdateMatrix();
 }
 
