@@ -104,7 +104,7 @@ void Enemy::Fire() {
 	Vector3 ePos = GetWorldPosition();
 
 	Vector3 e2pVect = pPos - ePos;
-	Vector3 normVect = VectorFunction::Normalize(e2pVect);
+	Vector3 normVect = Normalize(e2pVect);
 	velocity = normVect * kBulletSpeed;
 
 	EnemyBullet* newBullet = new EnemyBullet();

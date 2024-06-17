@@ -52,7 +52,7 @@ void Player::Update() {
 	if (input->PushKey(DIK_DOWN)) {
 		move.y -= kCharacterSpeed;
 	}
-	move = VectorFunction::Normalize(move);
+	move = Normalize(move);
 
 	Attack();
 	for (PlayerBullet* bullet : bullets) {
@@ -65,10 +65,10 @@ void Player::Update() {
 	Vector3 minLine = {-34.0f, -18.0f, -45.0f};
 	Vector3 maxLine = {34.0f, 18.0f, 45.0f};
 
-	VectorFunction::Clamp(worldTransform.translation_, minLine, maxLine);
+	Clamp(worldTransform.translation_, minLine, maxLine);
 
 	// 行列更新
-	worldTransform.matWorld_ = MatrixFunction::MakeAffineMatrix(worldTransform.scale_, worldTransform.rotation_, worldTransform.translation_);
+	worldTransform.matWorld_ = MakeAffineMatrix(worldTransform.scale_, worldTransform.rotation_, worldTransform.translation_);
 	worldTransform.TransferMatrix();
 }
 
@@ -103,7 +103,7 @@ void Player::Attack() {
 
 		const float kBulletSpeed = 1.0f;
 		Vector3 velocity(0, 0, kBulletSpeed);
-		velocity = VectorFunction::TransformNormal(velocity, worldTransform.matWorld_);
+		velocity = TransformNormal(velocity, worldTransform.matWorld_);
 
 		PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->initialize(model, worldTransform.translation_, velocity);

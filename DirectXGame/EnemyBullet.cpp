@@ -17,7 +17,7 @@ void EnemyBullet::initialize(Model* _model, const Vector3& _position, const Vect
 	worldTransform.scale_.z = 3.0f;
 	velocity = _velocity;
 
-	Vector3 normalizeVelocity = VectorFunction::Normalize(velocity);
+	Vector3 normalizeVelocity = Normalize(velocity);
 	worldTransform.rotation_.y = std::atan2(normalizeVelocity.x, normalizeVelocity.z);
 	float horizontalDistance = std::sqrt(normalizeVelocity.x * normalizeVelocity.x + normalizeVelocity.z * normalizeVelocity.z);
 
@@ -35,10 +35,11 @@ void EnemyBullet::Update() {
 
 	Vector3 toPlayer = player->GetWorldPositoin() - GetWorldPos();
 
-	Vector3 normalizeToPlayer = VectorFunction::Normalize(toPlayer);
-	Vector3 normalizeVelocity = VectorFunction::Normalize(velocity);
+	Vector3 normalizeToPlayer = Normalize(toPlayer);
 
-	velocity = VectorFunction::Slerp(normalizeVelocity, normalizeToPlayer, 0.005f) * kBulletSpeed;
+	Vector3 normalizeVelocity = Normalize(velocity);
+
+	velocity = Slerp(normalizeVelocity, normalizeToPlayer, 0.05f) * kBulletSpeed;
 
 	worldTransform.rotation_.y = std::atan2(normalizeVelocity.x, normalizeVelocity.z);
 	float horizontalDistance = std::sqrt(normalizeVelocity.x * normalizeVelocity.x + normalizeVelocity.z * normalizeVelocity.z);

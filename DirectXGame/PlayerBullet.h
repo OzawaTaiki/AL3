@@ -17,6 +17,7 @@ public:
 	static const uint32_t kLifeTime = 60 * 5;
 
 private:
+
 	Model* model = nullptr;
 	WorldTransform worldTransform;
 	uint32_t textureHandle = 0;
