@@ -29,10 +29,32 @@ void EnemyBullet::Update() {
 		isDead = true;
 	}
 	worldTransform.translation_ += velocity;
-	
-	//TODO: p1~ 何も手つけてない
+
+	// TODO: p1~ 何も手つけてない
+	const float kBulletSpeed = 1.0f;
+
+	Vector3 toPlayer = player->GetWorldPositoin() - GetWorldPos();
+
+	Vector3 normalizeToPlayer = VectorFunction::Normalize(toPlayer);
+	Vector3 normalizeVelocity = VectorFunction::Normalize(velocity);
+
+	velocity = VectorFunction::Slerp(normalizeVelocity, normalizeToPlayer, 0.005f) * kBulletSpeed;
+
+	worldTransform.rotation_.y = std::atan2(normalizeVelocity.x, normalizeVelocity.z);
+	float horizontalDistance = std::sqrt(normalizeVelocity.x * normalizeVelocity.x + normalizeVelocity.z * normalizeVelocity.z);
+
+	worldTransform.rotation_.x = -std::atan2(normalizeVelocity.y, horizontalDistance);
 
 	worldTransform.UpdateMatrix();
 }
 
 void EnemyBullet::Draw(ViewProjection& _viewProjection) { model->Draw(worldTransform, _viewProjection, textureHandle); }
+
+Vector3 EnemyBullet::GetWorldPos() {
+	Vector3 worldPos;
+	worldPos.x = worldTransform.matWorld_.m[3][0];
+	worldPos.y = worldTransform.matWorld_.m[3][1];
+	worldPos.z = worldTransform.matWorld_.m[3][2];
+
+	return worldPos;
+}

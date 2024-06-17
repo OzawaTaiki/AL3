@@ -115,11 +115,13 @@ Vector3 VectorFunction::Slerp(const Vector3& _vector1, const Vector3& _vector2, 
 
 	float dot = VectorFunction::Dot(normalizeV1, normalizeV2);
 
-	float angle = std::acos(dot);
+	float theta = std::acos(dot);
 
-	//Vector3 result = std::sin(1.0f-_t)
+	float divisor = (1.0f / std::sin(theta));
 
-	return Vector3();
+	Vector3 result = (_vector1 * std::sin((1.0f - _t) * theta) + _vector2 * std::sin(_t * theta)) * divisor;
+
+	return Vector3(result);
 }
 
 Vector3 operator+(const Vector3& _v1, const Vector3& _v2) { return Vector3(_v1.x + _v2.x, _v1.y + _v2.y, _v1.z + _v2.z); }

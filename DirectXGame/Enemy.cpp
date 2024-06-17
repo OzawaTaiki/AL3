@@ -109,6 +109,7 @@ void Enemy::Fire() {
 
 	EnemyBullet* newBullet = new EnemyBullet();
 	newBullet->initialize(model, worldTransform.translation_, velocity);
+	newBullet->SetPlayer(player);
 
 	bullets.push_back(newBullet);
 }

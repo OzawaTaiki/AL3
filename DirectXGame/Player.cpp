@@ -67,7 +67,6 @@ void Player::Update() {
 
 	VectorFunction::Clamp(worldTransform.translation_, minLine, maxLine);
 
-	VectorFunction::Slerp(Vector3(1, 0, 0), Vector3(1, 1, 0), 0);
 
 	// 行列更新
 	worldTransform.matWorld_ = MatrixFunction::MakeAffineMatrix(worldTransform.scale_, worldTransform.rotation_, worldTransform.translation_);
