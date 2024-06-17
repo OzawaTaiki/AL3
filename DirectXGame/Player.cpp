@@ -1,6 +1,6 @@
 #include "Player.h"
 #include "ImGuiManager.h"
-#include "MyLib.h"
+#include "MatrixFunction.h"
 #include <cassert>
 
 Player::~Player() {
@@ -66,7 +66,6 @@ void Player::Update() {
 	Vector3 maxLine = {34.0f, 18.0f, 45.0f};
 
 	VectorFunction::Clamp(worldTransform.translation_, minLine, maxLine);
-
 
 	// 行列更新
 	worldTransform.matWorld_ = MatrixFunction::MakeAffineMatrix(worldTransform.scale_, worldTransform.rotation_, worldTransform.translation_);

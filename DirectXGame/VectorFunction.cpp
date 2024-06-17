@@ -1,8 +1,8 @@
 #include "VectorFunction.h"
 #include <assert.h>
 #include <cmath>
+#include "MyLib.h"
 
-static const int kColumnWidth = 60;
 
 Vector3 VectorFunction::Add(const Vector3& _v1, const Vector3& _v2) {
 	Vector3 result;
@@ -115,11 +115,25 @@ Vector3 VectorFunction::Slerp(const Vector3& _vector1, const Vector3& _vector2, 
 
 	float dot = VectorFunction::Dot(normalizeV1, normalizeV2);
 
+	dot = 1.0f > dot ? 1.0f : dot;
+
 	float theta = std::acos(dot);
 
-	float divisor = (1.0f / std::sin(theta));
+	float sinTheta = std::sin(theta);
+	float sinThetaFrom = std::sin((1.0f - _t) * theta);
+	float sinThetaTo = std::sin(_t * theta);
 
-	Vector3 result = (_vector1 * std::sin((1.0f - _t) * theta) + _vector2 * std::sin(_t * theta)) * divisor;
+	Vector3 result;
+	if (sinTheta < 1.0e-5) {
+		result = normalizeV1;
+	} else {
+		result = (normalizeV1 * sinThetaFrom + normalizeV2 * sinThetaTo) / sinTheta;
+	}
+
+	float length1 = VectorFunction::length(_vector1);
+	float length2 = VectorFunction::length(_vector2);
+
+	//float length = Lerp(length1, length2, _t);
 
 	return Vector3(result);
 }
@@ -133,6 +147,8 @@ Vector3 operator*(const Vector3& _v1, const Vector3& _v2) { return Vector3(_v1.x
 Vector3 operator/(const Vector3& _v1, const Vector3& _v2) { return Vector3(_v1.x / _v2.x, _v1.y / _v2.y, _v1.z / _v2.z); }
 
 Vector3 operator*(const Vector3& _v, float _s) { return Vector3(_v.x * _s, _v.y * _s, _v.z * _s); }
+
+Vector3 operator/(const Vector3& _v, float _s) { return Vector3(_v.x / _s, _v.y / _s, _v.z / _s); }
 
 Vector3 operator-(const Vector3& _v) { return Vector3(-_v.x, -_v.y, -_v.z); }
 

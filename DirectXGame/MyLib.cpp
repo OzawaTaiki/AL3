@@ -1,3 +1,3 @@
 #include "MyLib.h"
 
-template<typename T> T MyLib::clamp(T value, T min, T max) { return (value < min) ? min : (value > max) ? max : value; }
+float Lerp(float _point1, float _point2, float _t) { return (1.0f - _t) * _point1 + _t * _point2; }
