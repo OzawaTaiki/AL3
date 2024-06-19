@@ -51,6 +51,8 @@ private: // メンバ変数
 	/// ゲームシーン用
 	/// </summary>
 
+	void CheckAllCollisions();
+
 	// テクスチャハンドル
 	uint32_t playerTextrueHandle = 0;
 	uint32_t enemyTextrueHandle = 0;

@@ -67,6 +67,8 @@ void Enemy::UpdateApproachPhase() {
 	}
 }
 
+void Enemy::OnCollision() {}
+
 Vector3 Enemy::GetWorldPosition() {
 	Vector3 worldPos;
 	worldPos.x = worldTransform.matWorld_.m[3][0];

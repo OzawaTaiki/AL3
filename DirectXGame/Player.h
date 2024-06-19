@@ -16,6 +16,10 @@ public:
 
 	Vector3 GetWorldPositoin();
 
+	const std::list<PlayerBullet*>& GetBullets() const { return bullets; };
+
+	void OnCollision();
+
 private:
 	// 旋回
 	void rotate();

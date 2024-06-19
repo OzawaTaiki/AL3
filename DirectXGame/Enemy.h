@@ -28,7 +28,11 @@ public:
 	void InitializeApproachPhase();
 	void UpdateApproachPhase();
 
+	void OnCollision();
+
+
 	Vector3 GetWorldPosition();
+	const std::list<EnemyBullet*>& GetBullets() const { return bullets; };
 
 	static const int kFireInterval = 60;
 

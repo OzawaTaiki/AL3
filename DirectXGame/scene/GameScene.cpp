@@ -38,7 +38,6 @@ void GameScene::Initialize() {
 	debugCamera = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 	AxisIndicator::GetInstance()->SetVisible(1);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection);
-
 }
 
 void GameScene::Update() {
@@ -51,6 +50,9 @@ void GameScene::Update() {
 	player->Update();
 	if (enemy)
 		enemy->Update();
+
+	CheckAllCollisions();
+
 	if (debugCameraActive) {
 		debugCamera->Update();
 		viewProjection.matView = debugCamera->GetViewProjection().matView;
@@ -106,6 +108,63 @@ void GameScene::Draw() {
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
+
+#pragma endregion
+}
+
+void GameScene::CheckAllCollisions() {
+
+	const float playerSize = 1.1f;
+	const float enemySize = 1.1f;
+	const float playerBulletSize = 1.1f;
+	const float enemyBulletSize = 1.1f;
+	Vector3 posA, posB;
+
+	const std::list<PlayerBullet*>& playerBullets = player->GetBullets();
+	const std::list<EnemyBullet*>& enemyBullets = enemy->GetBullets();
+
+	float distance = 0;
+
+#pragma region 自機と敵弾の衝突判定
+	posA = player->GetWorldPositoin();
+	for (EnemyBullet* bullet : enemyBullets) {
+		posB = bullet->GetWorldPosition();
+
+		distance = Length(posA - posB);
+		if (distance < playerSize + enemyBulletSize) {
+			player->OnCollision();
+			bullet->OnCollision();
+		}
+	}
+#pragma endregion
+
+#pragma region 自弾と敵の衝突判定
+	posA = enemy->GetWorldPosition();
+	for (PlayerBullet* bullet : playerBullets) {
+		posB = bullet->GetWorldPosition();
+
+		distance = Length(posA - posB);
+		if (distance < enemySize + playerBulletSize) {
+			enemy->OnCollision();
+			bullet->OnCollision();
+		}
+	}
+#pragma endregion
+
+#pragma region 自機と敵弾の衝突判定
+	for (PlayerBullet* pBullet : playerBullets) {
+		posA = pBullet->GetWorldPosition();
+
+		for (EnemyBullet* eBullet : enemyBullets) {
+			posB = eBullet->GetWorldPosition();
+
+			distance = Length(posA - posB);
+			if (distance < enemyBulletSize + playerBulletSize) {
+				pBullet->OnCollision();
+				eBullet->OnCollision();
+			}
+		}
+	}
 
 #pragma endregion
 }

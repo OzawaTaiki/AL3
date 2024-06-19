@@ -34,7 +34,7 @@ void EnemyBullet::Update() {
 	// TODO: p1~ 何も手つけてない
 	const float kBulletSpeed = 1.0f;
 
-	Vector3 toPlayer = player->GetWorldPositoin() - GetWorldPos();
+	Vector3 toPlayer = player->GetWorldPositoin() - GetWorldPosition();
 
 	Vector3 normalizeToPlayer = Normalize(toPlayer);
 
@@ -52,7 +52,7 @@ void EnemyBullet::Update() {
 
 void EnemyBullet::Draw(ViewProjection& _viewProjection) { model->Draw(worldTransform, _viewProjection, textureHandle); }
 
-Vector3 EnemyBullet::GetWorldPos() {
+Vector3 EnemyBullet::GetWorldPosition() {
 	Vector3 worldPos;
 	worldPos.x = worldTransform.matWorld_.m[3][0];
 	worldPos.y = worldTransform.matWorld_.m[3][1];
@@ -60,3 +60,5 @@ Vector3 EnemyBullet::GetWorldPos() {
 
 	return worldPos;
 }
+
+void EnemyBullet::OnCollision() { isDead = true; }

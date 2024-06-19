@@ -11,7 +11,10 @@ public:
 	void initialize(Model* _model, const Vector3& _position, const Vector3& _velocity, uint32_t _textrueHandle = 0);
 	void Update();
 	void Draw(ViewProjection& _viewProjection);
-	Vector3 GetWorldPos();
+	Vector3 GetWorldPosition();
+
+	void OnCollision();
+
 
 	bool IsDead() const { return isDead; };
 	void SetPlayer(Player* _player) { player = _player; };
