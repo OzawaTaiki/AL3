@@ -22,6 +22,7 @@ void EnemyBullet::initialize(Model* _model, const Vector3& _position, const Vect
 	float horizontalDistance = std::sqrt(normalizeVelocity.x * normalizeVelocity.x + normalizeVelocity.z * normalizeVelocity.z);
 
 	worldTransform.rotation_.x = -std::atan2(normalizeVelocity.y, horizontalDistance);
+	worldTransform.UpdateMatrix();
 }
 
 void EnemyBullet::Update() {
