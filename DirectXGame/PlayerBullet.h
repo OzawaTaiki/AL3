@@ -1,10 +1,11 @@
 #pragma once
+#include "Collider.h"
 #include "Model.h"
 #include "VectorFunction.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 
-class PlayerBullet {
+class PlayerBullet : public Collider {
 public:
 	void initialize(Model* _model, const Vector3& _position, const Vector3& _velocity, uint32_t _textrueHandle = 0);
 
@@ -12,9 +13,8 @@ public:
 
 	void Draw(const ViewProjection& _viewProjection);
 
-	void OnCollision();
-	Vector3 GetWorldPositoin();
-
+	void OnCollision() override;
+	Vector3 GetWorldPosition() override;
 
 	bool IsDead() const { return isDead; };
 

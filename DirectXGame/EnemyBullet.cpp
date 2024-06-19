@@ -25,7 +25,7 @@ void EnemyBullet::Draw(ViewProjection& _viewProjection) { model->Draw(worldTrans
 
 void EnemyBullet::OnCollision() { isDead = true; }
 
-Vector3 EnemyBullet::GetWorldPositoin() {
+Vector3 EnemyBullet::GetWorldPosition() {
 	Vector3 worldPos;
 
 	worldPos.x = worldTransform.translation_.x;

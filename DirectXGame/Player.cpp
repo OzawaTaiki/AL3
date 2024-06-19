@@ -79,7 +79,7 @@ void Player::Draw(ViewProjection& _viewProjection) {
 	}
 }
 
-Vector3 Player::GetWorldPositoin() {
+Vector3 Player::GetWorldPosition() {
 	Vector3 worldPos;
 
 	worldPos.x = worldTransform.translation_.x;

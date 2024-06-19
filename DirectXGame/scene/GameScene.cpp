@@ -115,57 +115,43 @@ void GameScene::Draw() {
 
 void GameScene::CheckAllCollisions() {
 
-	const float playerSize = 1.1f;
-	const float enemySize = 1.1f;
-	const float playerBulletSize = 1.1f;
-	const float enemyBulletSize = 1.1f;
-	Vector3 posA, posB;
-
 	const std::list<PlayerBullet*>& playerBullets = player->GetBullets();
 	const std::list<EnemyBullet*>& enemyBullets = enemy->GetBullets();
 
-	float distance = 0;
 
 #pragma region 自機と敵弾の衝突判定
-	posA = player->GetWorldPositoin();
 	for (EnemyBullet* bullet : enemyBullets) {
-		posB = bullet->GetWorldPositoin();
-
-		distance = VectorFunction::length(posA - posB);
-		if (distance < playerSize + enemyBulletSize) {
-			player->OnCollision();
-			bullet->OnCollision();
-		}
+		CheckCollisionPair(player, bullet);
 	}
 #pragma endregion
 
 #pragma region 自弾と敵の衝突判定
-	posA = enemy->GetWorldPositoin();
 	for (PlayerBullet* bullet : playerBullets) {
-		posB = bullet->GetWorldPositoin();
-
-		distance = VectorFunction::length(posA - posB);
-		if (distance < enemySize + playerBulletSize) {
-			enemy->OnCollision();
-			bullet->OnCollision();
-		}
+		CheckCollisionPair(bullet, enemy);
 	}
 #pragma endregion
 
 #pragma region 自機と敵弾の衝突判定
 	for (PlayerBullet* pBullet : playerBullets) {
-		posA = pBullet->GetWorldPositoin();
-
 		for (EnemyBullet* eBullet : enemyBullets) {
-			posB = eBullet->GetWorldPositoin();
-
-			distance = VectorFunction::length(posA - posB);
-			if (distance < enemyBulletSize + playerBulletSize) {
-				pBullet->OnCollision();
-				eBullet->OnCollision();
-			}
+			CheckCollisionPair(pBullet, eBullet);
 		}
 	}
 
 #pragma endregion
+}
+
+void GameScene::CheckCollisionPair(Collider* _colliderA, Collider* _colliderB) {
+	Vector3 worldPosisionColliderA = _colliderA->GetWorldPosition();
+	Vector3 worldPosisionColliderB = _colliderB->GetWorldPosition();
+
+	float radiusColliderA = _colliderA->GetRadius();
+	float radiusColliderB = _colliderB->GetRadius();
+
+	float distance = VectorFunction::length(worldPosisionColliderA - worldPosisionColliderB);
+
+	if (distance < radiusColliderA + radiusColliderB) {
+		_colliderA->OnCollision();
+		_colliderB->OnCollision();
+	}
 }

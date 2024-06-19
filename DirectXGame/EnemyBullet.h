@@ -1,20 +1,20 @@
 #pragma once
 
+#include "Collider.h"
 #include "Model.h"
 #include "VectorFunction.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 
-class EnemyBullet {
+class EnemyBullet : public Collider {
 public:
 	void initialize(Model* _model, const Vector3& _position, const Vector3& _velocity, uint32_t _textrueHandle = 0);
 	void Update();
 	void Draw(ViewProjection& _viewProjection);
 
-	void OnCollision();
-
 	bool IsDead() const { return isDead; };
-	Vector3 GetWorldPositoin();
+	Vector3 GetWorldPosition() override;
+	void OnCollision() override;
 
 	static const int32_t kLifeTime = 60 * 5;
 

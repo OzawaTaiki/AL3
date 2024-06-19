@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Collider.h"
 #include "EnemyBullet.h"
 #include "Input.h"
 #include "Model.h"
@@ -8,13 +9,12 @@
 
 class Player;
 
-class Enemy {
+class Enemy : public Collider {
 
 	enum class Phase {
 		Approach, // 接近する
 		Leave     // 離脱する
 	};
-
 
 public:
 	~Enemy();
@@ -27,13 +27,12 @@ public:
 	void SetPlayer(Player* _player) { player = _player; };
 
 	const std::list<EnemyBullet*>& GetBullets() const { return bullets; };
-	Vector3 GetWorldPositoin();
 
 	void InitializeApproachPhase();
 	void UpdateApproachPhase();
 
-	void OnCollision();
-
+	Vector3 GetWorldPosition() override;
+	void OnCollision() override;
 
 	static const int kFireInterval = 60;
 
@@ -61,4 +60,3 @@ private:
 
 	const float radius = 2.0f;
 };
-

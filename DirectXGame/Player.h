@@ -1,4 +1,5 @@
 #pragma once
+#include "Collider.h"
 #include "Input.h"
 #include "Model.h"
 #include "PlayerBullet.h"
@@ -6,7 +7,7 @@
 #include "WorldTransform.h"
 #include <list>
 
-class Player {
+class Player : public Collider {
 public:
 	~Player();
 
@@ -14,11 +15,10 @@ public:
 	void Update();
 	void Draw(ViewProjection& _viewProjection);
 
-	Vector3 GetWorldPositoin();
 	const std::list<PlayerBullet*>& GetBullets() const { return bullets; };
 
-	void OnCollision();
-
+	void OnCollision() override;
+	Vector3 GetWorldPosition() override;
 
 private:
 	// 旋回

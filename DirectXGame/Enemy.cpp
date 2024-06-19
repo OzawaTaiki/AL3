@@ -94,7 +94,7 @@ void Enemy::Fire() {
 	const float kBulletSpeed = 1.0f;
 	Vector3 velocity(0, 0, -kBulletSpeed);
 
-	Vector3 pPos = player->GetWorldPositoin();
+	Vector3 pPos = player->GetWorldPosition();
 	Vector3 ePos = worldTransform.translation_;
 
 	Vector3 e2pVect = pPos - ePos;
@@ -107,7 +107,7 @@ void Enemy::Fire() {
 	bullets.push_back(newBullet);
 }
 
-Vector3 Enemy::GetWorldPositoin() {
+Vector3 Enemy::GetWorldPosition() {
 	Vector3 worldPos;
 
 	worldPos.x = worldTransform.translation_.x;

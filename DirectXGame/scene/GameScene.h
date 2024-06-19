@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Audio.h"
+#include "Collider.h"
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
 #include "Enemy.h"
@@ -68,8 +69,8 @@ private: // メンバ変数
 	bool debugCameraActive = false;
 	DebugCamera* debugCamera = nullptr;
 
-	//関数
+	// 関数
 	void CheckAllCollisions();
 
-
+	void CheckCollisionPair(Collider* _colliderA, Collider* _colliderB);
 };
