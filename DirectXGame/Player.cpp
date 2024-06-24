@@ -19,6 +19,10 @@ void Player::Initialize(Model* _model, uint32_t _textrueHandle) {
 	worldTransform.Initialize();
 
 	input = Input::GetInstance();
+
+	SetCollisionAttribute(0b1);
+	SetCollisionMask(0b11111110);
+
 }
 
 void Player::Update() {

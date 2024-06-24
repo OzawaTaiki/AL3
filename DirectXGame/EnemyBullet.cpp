@@ -11,6 +11,9 @@ void EnemyBullet::initialize(Model* _model, const Vector3& _position, const Vect
 
 	worldTransform.translation_ = _position;
 	velocity = _velocity;
+
+	SetCollisionAttribute(0b10);
+	SetCollisionMask(0b11111101);
 }
 
 void EnemyBullet::Update() {

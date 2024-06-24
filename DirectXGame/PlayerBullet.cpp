@@ -11,6 +11,9 @@ void PlayerBullet::initialize(Model* _model, const Vector3& _position, const Vec
 
 	worldTransform.translation_ = _position;
 	velocity = _velocity;
+
+	SetCollisionAttribute(0b1);
+	SetCollisionMask(0b11111110);
 }
 
 void PlayerBullet::Update() {

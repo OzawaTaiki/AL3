@@ -22,6 +22,9 @@ void Enemy::Initialize(Model* _model, uint32_t _textrueHandle) {
 	worldTransform.Initialize();
 	phase = phaseTable[(int)Phase::Approach];
 
+	SetCollisionAttribute(0b10);
+	SetCollisionMask(0b11111101);
+
 	InitializeApproachPhase();
 }
 
@@ -57,7 +60,6 @@ void Enemy::Draw(ViewProjection& _viewProjection) {
 
 void Enemy::SetTranslete(const Vector3& _translation) { worldTransform.translation_ = _translation; }
 
-
 void Enemy::InitializeApproachPhase() { fireTimer = kFireInterval; }
 
 void Enemy::UpdateApproachPhase() {
@@ -86,7 +88,7 @@ void Enemy::ApproachPhase() {
 	Vector3 velocity(0, 0, -0.1f);
 	worldTransform.translation_ += velocity;
 	if (worldTransform.translation_.z < 0.0f) {
-		//phase = phaseTable[(int)Phase::Leave];
+		// phase = phaseTable[(int)Phase::Leave];
 	}
 }
 

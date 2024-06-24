@@ -115,35 +115,61 @@ void GameScene::Draw() {
 
 void GameScene::CheckAllCollisions() {
 
-	const std::list<PlayerBullet*>& playerBullets = player->GetBullets();
-	const std::list<EnemyBullet*>& enemyBullets = enemy->GetBullets();
+	std::list<Collider*> colliders;
 
+	colliders.push_back(player);
+	colliders.push_back(enemy);
+
+	for (PlayerBullet* pBullet : player->GetBullets())
+		colliders.push_back(pBullet);
+	for (EnemyBullet* eBullet : enemy->GetBullets())
+		colliders.push_back(eBullet);
+
+	std::list<Collider*>::iterator itrA = colliders.begin();
+	for (; itrA != colliders.end(); itrA++) {
+		Collider* colliderA = *itrA;
+
+		std::list<Collider*>::iterator itrB = itrA;
+		itrB++;
+
+		for (; itrB != colliders.end(); itrB++) {
+			Collider* colliderB = *itrB;
+			CheckCollisionPair(colliderA, colliderB);
+		}
+	}
+
+	/*const std::list<PlayerBullet*>& playerBullets = player->GetBullets();
+	const std::list<EnemyBullet*>& enemyBullets = enemy->GetBullets();
 
 #pragma region 自機と敵弾の衝突判定
 	for (EnemyBullet* bullet : enemyBullets) {
-		CheckCollisionPair(player, bullet);
+	    CheckCollisionPair(player, bullet);
 	}
 #pragma endregion
 
 #pragma region 自弾と敵の衝突判定
 	for (PlayerBullet* bullet : playerBullets) {
-		CheckCollisionPair(bullet, enemy);
+	    CheckCollisionPair(bullet, enemy);
 	}
 #pragma endregion
 
 #pragma region 自機と敵弾の衝突判定
 	for (PlayerBullet* pBullet : playerBullets) {
-		for (EnemyBullet* eBullet : enemyBullets) {
-			CheckCollisionPair(pBullet, eBullet);
-		}
+	    for (EnemyBullet* eBullet : enemyBullets) {
+	        CheckCollisionPair(pBullet, eBullet);
+	    }
 	}
 
 #pragma endregion
+*/
 }
 
 void GameScene::CheckCollisionPair(Collider* _colliderA, Collider* _colliderB) {
 	Vector3 worldPosisionColliderA = _colliderA->GetWorldPosition();
 	Vector3 worldPosisionColliderB = _colliderB->GetWorldPosition();
+
+	if (!(_colliderA->GetCollisionAttribute() & _colliderB->GetCollisionMask()) || !(_colliderA->GetCollisionMask() & _colliderB->GetCollisionAttribute()))
+		return;
 
 	float radiusColliderA = _colliderA->GetRadius();
 	float radiusColliderB = _colliderB->GetRadius();
