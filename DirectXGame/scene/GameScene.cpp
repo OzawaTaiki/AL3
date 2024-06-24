@@ -1,5 +1,6 @@
 #include "GameScene.h"
 #include "AxisIndicator.h"
+#include "PrimitiveDrawer.h"
 #include "TextureManager.h"
 #include <cassert>
 #include <fstream>
@@ -35,10 +36,11 @@ void GameScene::Initialize() {
 	enemyModel = Model::Create();
 
 	viewProjection.Initialize();
+	PrimitiveDrawer::GetInstance()->SetViewProjection(&viewProjection);
 
 	railCamera = new RailCamera();
-	Vector3 railCameraPos = {0, 3.0f, 0};
-	Vector3 railCameraRota = {0.26f, 0, 0};
+	Vector3 railCameraPos = {0, 3.0f, -20};
+	Vector3 railCameraRota = {0.0f, 0, 0};
 	railCamera->Initialize(railCameraPos, railCameraRota);
 
 	skydoom = new Skydoom();
@@ -46,7 +48,7 @@ void GameScene::Initialize() {
 	skydoom->Initialze(modelSkydoom);
 
 	player = new Player();
-	Vector3 playerPos(0, 0, 15.0f);
+	Vector3 playerPos(0, 0, 0.0f);
 	player->Initialize(playerModel, playerTextrueHandle, playerPos);
 	player->SetParent(&railCamera->GetWorldTransform());
 
@@ -69,7 +71,7 @@ void GameScene::Update() {
 #endif // _DEBUG
 
 	Vector3 railCameraPos = {0, 0, 0};
-	Vector3 railCameraRota = {0.0f, 0.001f, 0};
+	Vector3 railCameraRota = {0.0f, 0.000f, 0};
 	railCamera->Update(railCameraPos, railCameraRota);
 
 	skydoom->Update();
@@ -90,7 +92,7 @@ void GameScene::Update() {
 		return false;
 	});
 
-	//UpdataEnemyPopCommands();
+	// UpdataEnemyPopCommands();
 
 	if (debugCameraActive) {
 		debugCamera->Update();
@@ -142,6 +144,7 @@ void GameScene::Draw() {
 	for (EnemyBullet* nBullet : enemyBullet) {
 		nBullet->Draw(viewProjection);
 	}
+	railCamera->CamulRomDraw();
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
