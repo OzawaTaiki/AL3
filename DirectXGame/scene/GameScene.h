@@ -2,6 +2,7 @@
 
 #include "Audio.h"
 #include "Collider.h"
+#include "CollsionManager.h"
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
 #include "Enemy.h"
@@ -66,11 +67,8 @@ private: // メンバ変数
 	Player* player = nullptr;
 	Enemy* enemy = nullptr;
 
+	CollsionManager* collsionManager = nullptr;
+
 	bool debugCameraActive = false;
 	DebugCamera* debugCamera = nullptr;
-
-	// 関数
-	void CheckAllCollisions();
-
-	void CheckCollisionPair(Collider* _colliderA, Collider* _colliderB);
 };

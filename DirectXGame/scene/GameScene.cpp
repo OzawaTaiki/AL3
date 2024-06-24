@@ -10,6 +10,7 @@ GameScene::~GameScene() {
 	delete player;
 	delete enemy;
 	delete debugCamera;
+	delete collsionManager;
 }
 
 void GameScene::Initialize() {
@@ -38,6 +39,8 @@ void GameScene::Initialize() {
 	debugCamera = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 	AxisIndicator::GetInstance()->SetVisible(1);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection);
+
+	collsionManager = new CollsionManager;
 }
 
 void GameScene::Update() {
@@ -49,9 +52,21 @@ void GameScene::Update() {
 
 #endif // _DEBUG
 
+	collsionManager->ListReset();
+
 	player->Update();
-	if (enemy)
+	collsionManager->SetCollider(player);
+	for (Collider* pBullet : player->GetBullets()) {
+		collsionManager->SetCollider(pBullet);
+	}
+
+	if (enemy) {
 		enemy->Update();
+		collsionManager->SetCollider(enemy);
+		for (Collider* eBullet : enemy->GetBullets()) {
+			collsionManager->SetCollider(eBullet);
+		}
+	}
 	if (debugCameraActive) {
 		debugCamera->Update();
 		viewProjection.matView = debugCamera->GetViewProjection().matView;
@@ -61,7 +76,7 @@ void GameScene::Update() {
 		viewProjection.UpdateMatrix();
 	}
 
-	CheckAllCollisions();
+	collsionManager->CheckAllCollisions();
 }
 
 void GameScene::Draw() {
@@ -111,73 +126,4 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
-}
-
-void GameScene::CheckAllCollisions() {
-
-	std::list<Collider*> colliders;
-
-	colliders.push_back(player);
-	colliders.push_back(enemy);
-
-	for (PlayerBullet* pBullet : player->GetBullets())
-		colliders.push_back(pBullet);
-	for (EnemyBullet* eBullet : enemy->GetBullets())
-		colliders.push_back(eBullet);
-
-	std::list<Collider*>::iterator itrA = colliders.begin();
-	for (; itrA != colliders.end(); itrA++) {
-		Collider* colliderA = *itrA;
-
-		std::list<Collider*>::iterator itrB = itrA;
-		itrB++;
-
-		for (; itrB != colliders.end(); itrB++) {
-			Collider* colliderB = *itrB;
-			CheckCollisionPair(colliderA, colliderB);
-		}
-	}
-
-	/*const std::list<PlayerBullet*>& playerBullets = player->GetBullets();
-	const std::list<EnemyBullet*>& enemyBullets = enemy->GetBullets();
-
-#pragma region 自機と敵弾の衝突判定
-	for (EnemyBullet* bullet : enemyBullets) {
-	    CheckCollisionPair(player, bullet);
-	}
-#pragma endregion
-
-#pragma region 自弾と敵の衝突判定
-	for (PlayerBullet* bullet : playerBullets) {
-	    CheckCollisionPair(bullet, enemy);
-	}
-#pragma endregion
-
-#pragma region 自機と敵弾の衝突判定
-	for (PlayerBullet* pBullet : playerBullets) {
-	    for (EnemyBullet* eBullet : enemyBullets) {
-	        CheckCollisionPair(pBullet, eBullet);
-	    }
-	}
-
-#pragma endregion
-*/
-}
-
-void GameScene::CheckCollisionPair(Collider* _colliderA, Collider* _colliderB) {
-	Vector3 worldPosisionColliderA = _colliderA->GetWorldPosition();
-	Vector3 worldPosisionColliderB = _colliderB->GetWorldPosition();
-
-	if (!(_colliderA->GetCollisionAttribute() & _colliderB->GetCollisionMask()) || !(_colliderA->GetCollisionMask() & _colliderB->GetCollisionAttribute()))
-		return;
-
-	float radiusColliderA = _colliderA->GetRadius();
-	float radiusColliderB = _colliderB->GetRadius();
-
-	float distance = VectorFunction::length(worldPosisionColliderA - worldPosisionColliderB);
-
-	if (distance < radiusColliderA + radiusColliderB) {
-		_colliderA->OnCollision();
-		_colliderB->OnCollision();
-	}
 }
