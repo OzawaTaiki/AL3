@@ -18,9 +18,17 @@ public:
 	const WorldTransform& GetWorldTransform() { return worldTransform; };
 
 private:
+	void CaluculateCatmulRompoint();
+
 	void Imgui();
 
 	std::vector<Vector3> controlPoints;
+	std::vector<Vector3> pointsDrawing;
+
+	float posT;
+	float directionT;
+
+	float deltaTime = 1.0f / 60.0f;
 
 	// ワールド変換データ
 	WorldTransform worldTransform;

@@ -21,22 +21,34 @@ void RailCamera::Initialize(const Vector3& _worldPos, const Vector3& _rotare) {
         {20, 0,  0},
         {30, 0,  0},
 	};
+
+	posT = 0;
+	directionT = 0;
 }
 
 void RailCamera::Update(const Vector3& _move, const Vector3& _rotare) {
 
 	Imgui();
+	CaluculateCatmulRompoint();
+
+
+
 	worldTransform.translation_ += _move;
 	worldTransform.rotation_ += _rotare;
 	worldTransform.UpdateMatrix();
-	// worldTransform.matWorld_ = MatrixFunction::MakeAffineMatrix(worldTransform.scale_, worldTransform.rotation_, worldTransform.translation_);
-	// worldTransform.TransferMatrix();
 
 	viewProjection.matView = MatrixFunction::Inverse(worldTransform.matWorld_);
 }
 
 void RailCamera::CamulRomDraw() {
-	std::vector<Vector3> pointsDrawing;
+
+	for (int i = 1; i < pointsDrawing.size() - 1; i++) {
+		PrimitiveDrawer::GetInstance()->DrawLine3d(pointsDrawing[i - 1], pointsDrawing[i], {1.0f, 0.0f, 0.0f, 1.0f});
+	}
+}
+
+void RailCamera::CaluculateCatmulRompoint() {
+
 	const size_t segmentCount = 100;
 
 	for (size_t i = 0; i < segmentCount + 1; i++) {
@@ -44,9 +56,6 @@ void RailCamera::CamulRomDraw() {
 		Vector3 pos = CalculatePointCatmullRom(controlPoints, t);
 
 		pointsDrawing.push_back(pos);
-	}
-	for (int i = 1; i < pointsDrawing.size() - 1; i++) {
-		PrimitiveDrawer::GetInstance()->DrawLine3d(pointsDrawing[i - 1], pointsDrawing[i], {1.0f, 0.0f, 0.0f, 1.0f});
 	}
 }
 
