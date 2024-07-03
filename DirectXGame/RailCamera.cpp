@@ -48,8 +48,6 @@ void RailCamera::CamulRomDraw() {
 	for (int i = 1; i < pointsDrawing.size() - 1; i++) {
 		PrimitiveDrawer::GetInstance()->DrawLine3d(pointsDrawing[i - 1], pointsDrawing[i], {1.0f, 0.0f, 0.0f, 1.0f});
 	}
-	Vector4 color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-	PrimitiveDrawer::GetInstance()->DrawLine3d(worldTransform.translation_, worldTransform.translation_ + targetP, color);
 }
 
 Vector3 RailCamera::GetWorldPosition() {
@@ -82,7 +80,6 @@ void RailCamera::Move() {
 	worldTransform.translation_ = position;
 
 	Vector3 target = CalculatePointCatmullRom(controlPoints, directionT);
-	targetP = target;
 
 	Vector3 foward = target - position;
 

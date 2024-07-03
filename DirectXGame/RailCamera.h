@@ -34,9 +34,7 @@ private:
 
 	float speedT;
 
-	Vector3 targetP;
 	float deltaTime = 1.0f / 60.0f;
-
 
 	// ワールド変換データ
 	WorldTransform worldTransform;
