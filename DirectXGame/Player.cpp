@@ -15,6 +15,7 @@ void Player::Initialize(Model* _model, uint32_t _textrueHandle, const Vector3& _
 	assert(_model);
 	model = _model;
 	worldTransform.translation_ = _pos;
+	worldTransform.translation_.y -= 5.0f;
 	textureHandle = _textrueHandle;
 	// ワールドトランス初期化
 	worldTransform.Initialize();

@@ -48,7 +48,7 @@ void GameScene::Initialize() {
 	skydoom->Initialze(modelSkydoom);
 
 	player = new Player();
-	Vector3 playerPos(0, 0, 0.0f);
+	Vector3 playerPos(0, 0, 20.0f);
 	player->Initialize(playerModel, playerTextrueHandle, playerPos);
 	player->SetParent(&railCamera->GetWorldTransform());
 
@@ -72,7 +72,8 @@ void GameScene::Update() {
 
 	Vector3 railCameraPos = {0, 0, 0};
 	Vector3 railCameraRota = {0.0f, 0.000f, 0};
-	railCamera->Update(railCameraPos, railCameraRota);
+	//railCamera->Update(railCameraPos, railCameraRota);
+	railCamera->Update();
 
 	skydoom->Update();
 

@@ -9,7 +9,7 @@ class RailCamera {
 public:
 	void Initialize(const Vector3& _worldPos, const Vector3& _rotare);
 
-	void Update(const Vector3& _move, const Vector3& _rotare);
+	void Update();
 
 	void CamulRomDraw();
 
@@ -17,8 +17,12 @@ public:
 
 	const WorldTransform& GetWorldTransform() { return worldTransform; };
 
+	Vector3 GetWorldPosition();
+
 private:
 	void CaluculateCatmulRompoint();
+
+	void Move();
 
 	void Imgui();
 
@@ -28,7 +32,11 @@ private:
 	float posT;
 	float directionT;
 
+	float speedT;
+
+	Vector3 targetP;
 	float deltaTime = 1.0f / 60.0f;
+
 
 	// ワールド変換データ
 	WorldTransform worldTransform;
