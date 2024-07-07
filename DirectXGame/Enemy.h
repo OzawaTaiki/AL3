@@ -60,4 +60,5 @@ private:
 	GameScene* gameScene = nullptr;
 
 	const float radius = 2.0f;
+	bool isAlive;
 };

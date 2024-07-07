@@ -17,7 +17,7 @@ void Enemy::Initialize(Model* _model, uint32_t _textrueHandle) {
 	// ワールドトランス初期化
 	worldTransform.Initialize();
 	phase = phaseTable[(int)Phase::Approach];
-
+	isAlive = true;
 	InitializeApproachPhase();
 }
 
@@ -32,7 +32,10 @@ void Enemy::Update() {
 	Imgui();
 }
 
-void Enemy::Draw(ViewProjection& _viewProjection) { model->Draw(worldTransform, _viewProjection, textureHandle); }
+void Enemy::Draw(ViewProjection& _viewProjection) {
+	if (isAlive)
+		model->Draw(worldTransform, _viewProjection, textureHandle);
+}
 
 void Enemy::SetTranslete(const Vector3& _translation) { worldTransform.translation_ = _translation; }
 
@@ -46,7 +49,7 @@ void Enemy::UpdateApproachPhase() {
 	}
 }
 
-void Enemy::OnCollision() {}
+void Enemy::OnCollision() { isAlive = false; }
 
 void Enemy::Imgui() {
 	ImGui::Begin("Enemy");

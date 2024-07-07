@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Enemy.h"
 #include "ImGuiManager.h"
 #include "MyLib.h"
 #include <TextureManager.h>
@@ -27,9 +28,11 @@ void Player::Initialize(Model* _model, uint32_t _textrueHandle, uint32_t _reticl
 	worldTransform.Initialize();
 	woldTransform3DReticle.Initialize();
 	input = Input::GetInstance();
+
+	isLockOn = false;
 }
 
-void Player::Update(const ViewProjection& _viewProjection) {
+void Player::Update(const ViewProjection& _viewProjection, const std::list<Enemy*>& _enemy) {
 
 #ifdef _DEBUG
 	ImGui();
@@ -62,6 +65,11 @@ void Player::Update(const ViewProjection& _viewProjection) {
 	}
 	move = VectorFunction::Normalize(move) * kCharacterSpeed;
 
+	Update3DReticle();
+	Update2DReticle(_viewProjection);
+
+	LockOn(_enemy, _viewProjection);
+
 	Attack();
 	for (PlayerBullet* bullet : bullets) {
 		bullet->Update();
@@ -79,9 +87,6 @@ void Player::Update(const ViewProjection& _viewProjection) {
 	worldTransform.UpdateMatrix();
 	// worldTransform.matWorld_ = MatrixFunction::MakeAffineMatrix(worldTransform.scale_, worldTransform.rotation_, worldTransform.translation_);
 	// worldTransform.TransferMatrix();
-
-	Update3DReticle();
-	Update2DReticle(_viewProjection);
 }
 
 void Player::Draw(ViewProjection& _viewProjection) {
@@ -131,9 +136,14 @@ void Player::Attack() {
 
 		const float kBulletSpeed = 1.0f;
 		Vector3 velocity(0, 0, kBulletSpeed);
-		velocity = Get3DReticleWorldPositoin() - GetWorldPositoin();
-		velocity = VectorFunction::Normalize(velocity) * kBulletSpeed;
-		// velocity = VectorFunction::TransformNormal(velocity, worldTransform.matWorld_);
+		if (isLockOn) {
+			velocity = lockOnEnemyPosition - GetWorldPositoin();
+			velocity = VectorFunction::Normalize(velocity) * kBulletSpeed;
+			// velocity = VectorFunction::TransformNormal(velocity, worldTransform.matWorld_);
+		} else {
+			velocity = Get3DReticleWorldPositoin() - GetWorldPositoin();
+			velocity = VectorFunction::Normalize(velocity) * kBulletSpeed;
+		}
 
 		PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->initialize(model, GetWorldPositoin(), velocity);
@@ -166,6 +176,36 @@ void Player::Update2DReticle(const ViewProjection& _viewProjection) {
 
 	// スプライトのレティクルに座標設定
 	sprite2DReticle->SetPosition(Vector2(positionReticle.x, positionReticle.y));
+}
+
+void Player::LockOn(const std::list<Enemy*>& _enemy, const ViewProjection& _viewProjection) {
+
+	const float kLockOnRadius = 40.0f;
+
+	for (Enemy* nEnemy : _enemy) {
+		Vector3 enemyPos = nEnemy->GetWorldPositoin();
+		// ビューポート行列
+		Matrix4x4 matViewport = MatrixFunction::MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
+
+		// ビュー行列とプロジェクション行列、ビューポート行列を合成する
+		Matrix4x4 matViewProjectionViewport = _viewProjection.matView * _viewProjection.matProjection * matViewport;
+
+		// ワールド→スクリーン座標変換(ここで3Dから2Dになる)
+		Vector3 enemyPosOfScreen = VectorFunction::Transform(enemyPos, matViewProjectionViewport);
+		Vector2 vec2EnemyPosOfScreen = Vector2(enemyPosOfScreen.x, enemyPosOfScreen.y);
+
+		// ２Dレティクルとの距離を計算
+		Vector2 positionReticle = sprite2DReticle->GetPosition();
+
+		float distance = VectorFunction::Length(vec2EnemyPosOfScreen - positionReticle);
+
+		if (kLockOnRadius > distance) {
+			sprite2DReticle->SetPosition(vec2EnemyPosOfScreen);
+			lockOnEnemyPosition = nEnemy->GetWorldPositoin();
+			isLockOn = true;
+		} else
+			isLockOn = false;
+	}
 }
 
 void Player::ImGui() {

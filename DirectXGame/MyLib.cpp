@@ -18,7 +18,7 @@ Vector3 ClosestPoint(const Vector3& _point, const Segment& _segment)
 
 bool IsCollision(const Sphere& _s1, const Sphere& _s2)
 {
-	float distance = VectorFunction::length(VectorFunction::Subtract(_s1.center, _s2.center));
+	float distance = VectorFunction::Length(VectorFunction::Subtract(_s1.center, _s2.center));
 	return distance <= _s1.radius + _s2.radius ? true : false;
 }
 

@@ -7,12 +7,14 @@
 #include "WorldTransform.h"
 #include <list>
 
+class Enemy;
+
 class Player {
 public:
 	~Player();
 
 	void Initialize(Model* _model, uint32_t _textrueHandle, uint32_t _reticleTextrueHandle, const Vector3& _pos = {0, 0, 0});
-	void Update(const ViewProjection& _viewProjection);
+	void Update(const ViewProjection& _viewProjection, const std::list<Enemy*>& _enemy);
 	void Draw(ViewProjection& _viewProjection);
 	void DrawUI();
 
@@ -36,6 +38,7 @@ private:
 
 	void Update3DReticle();
 	void Update2DReticle(const ViewProjection& _viewProjection);
+	void LockOn(const std::list<Enemy*>& _enemy, const ViewProjection& _viewProjection);
 
 	WorldTransform worldTransform;
 	Model* model = nullptr;
@@ -44,7 +47,7 @@ private:
 	Input* input = nullptr;
 
 	const float kRotSpeed = 0.02f;      // 回転の速さ
-	const float kCharacterSpeed = 0.1f; // キャラクターの速さ
+	const float kCharacterSpeed = 0.3f; // キャラクターの速さ
 
 	const float radius = 2.0f;
 
@@ -53,6 +56,8 @@ private:
 	WorldTransform woldTransform3DReticle;
 	uint32_t texture3DReticle = 0;
 	Sprite* sprite2DReticle = nullptr;
+	bool isLockOn;
+	Vector3 lockOnEnemyPosition;
 
 #ifdef _DEBUG
 	void ImGui();

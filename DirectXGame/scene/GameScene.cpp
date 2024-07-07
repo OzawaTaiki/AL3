@@ -75,7 +75,7 @@ void GameScene::Update() {
 
 	skydoom->Update();
 
-	player->Update(viewProjection);
+	player->Update(viewProjection, enemy);
 
 	for (Enemy* nEnemy : enemy) {
 		nEnemy->Update();
@@ -183,7 +183,7 @@ void GameScene::CheckAllCollisions() {
 	for (EnemyBullet* bullet : enemyBullet) {
 		posB = bullet->GetWorldPositoin();
 
-		distance = VectorFunction::length(posA - posB);
+		distance = VectorFunction::Length(posA - posB);
 		if (distance < playerSize + enemyBulletSize) {
 			player->OnCollision();
 			bullet->OnCollision();
@@ -197,7 +197,7 @@ void GameScene::CheckAllCollisions() {
 		for (PlayerBullet* bullet : playerBullets) {
 			posB = bullet->GetWorldPositoin();
 
-			distance = VectorFunction::length(posA - posB);
+			distance = VectorFunction::Length(posA - posB);
 			if (distance < enemySize + playerBulletSize) {
 				nEnemy->OnCollision();
 				bullet->OnCollision();
@@ -213,7 +213,7 @@ void GameScene::CheckAllCollisions() {
 		for (EnemyBullet* eBullet : enemyBullet) {
 			posB = eBullet->GetWorldPositoin();
 
-			distance = VectorFunction::length(posA - posB);
+			distance = VectorFunction::Length(posA - posB);
 			if (distance < enemyBulletSize + playerBulletSize) {
 				pBullet->OnCollision();
 				eBullet->OnCollision();

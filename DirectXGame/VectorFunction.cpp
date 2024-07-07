@@ -56,7 +56,7 @@ Vector3 VectorFunction::Cross(const Vector3& _v1, const Vector3& _v2) {
 	return result;
 }
 
-float VectorFunction::length(const Vector3& v) {
+float VectorFunction::Length(const Vector3& v) {
 	float result;
 	result = std::sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
 	return result;
@@ -64,7 +64,7 @@ float VectorFunction::length(const Vector3& v) {
 
 Vector3 VectorFunction::Normalize(const Vector3& v) {
 	Vector3 result;
-	float lenght = length(v);
+	float lenght = Length(v);
 	if (lenght == 0)
 		return {0, 0, 0};
 
@@ -100,6 +100,13 @@ Vector3 VectorFunction::TransformNormal(const Vector3& _v, const Matrix4x4& _m) 
 	return result;
 }
 
+float VectorFunction::Length(const Vector2& _vector) {
+
+	float result;
+	result = std::sqrtf(_vector.x * _vector.x + _vector.y * _vector.y);
+	return result;
+}
+
 Vector3& operator+=(Vector3& _v1, const Vector3& _v2) { return _v1 = Vector3(_v1.x + _v2.x, _v1.y + _v2.y, _v1.z + _v2.z); }
 
 Vector3& operator-=(Vector3& _v1, const Vector3& _v2) { return _v1 = Vector3(_v1.x - _v2.x, _v1.y - _v2.y, _v1.z - _v2.z); }
@@ -109,3 +116,5 @@ Vector3 operator+(const Vector3& _v1, const Vector3& _v2) { return Vector3(_v1.x
 Vector3 operator-(const Vector3& _v1, const Vector3& _v2) { return Vector3(_v1.x - _v2.x, _v1.y - _v2.y, _v1.z - _v2.z); }
 
 Vector3 operator*(const Vector3& _v1, float _k) { return Vector3(_v1.x * _k, _v1.y * _k, _v1.z * _k); }
+
+Vector2 operator-(const Vector2& _v1, const Vector2& _v2) { return Vector2(_v1.x - _v2.x, _v1.y - _v2.y); }

@@ -1,5 +1,6 @@
 #pragma once
 #include <Matrix4x4.h>
+#include <Vector2.h>
 #include <Vector3.h>
 
 class VectorFunction {
@@ -10,12 +11,14 @@ public:
 	static Vector3 Multiply(const Vector3& v1, const Vector3& v2);
 	static float Dot(const Vector3& v1, const Vector3& v2);
 	static Vector3 Cross(const Vector3& _v1, const Vector3& _v2);
-	static float length(const Vector3& v);
+	static float Length(const Vector3& v);
 	static Vector3 Normalize(const Vector3& v);
 	static Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);
 
 	static void Clamp(Vector3& _value, const Vector3& _min, const Vector3& _max);
 	static Vector3 TransformNormal(const Vector3& _v, const Matrix4x4& _m);
+
+	static float Length(const Vector2& _vector);
 };
 
 Vector3& operator+=(Vector3& _v1, const Vector3& _v2);
@@ -23,3 +26,5 @@ Vector3& operator-=(Vector3& _v1, const Vector3& _v2);
 Vector3 operator+(const Vector3& _v1, const Vector3& _v2);
 Vector3 operator-(const Vector3& _v1, const Vector3& _v2);
 Vector3 operator*(const Vector3& _v1, float _k);
+
+Vector2 operator-(const Vector2& _v1, const Vector2& _v2);
