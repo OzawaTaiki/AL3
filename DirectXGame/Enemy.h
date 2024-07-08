@@ -34,7 +34,7 @@ public:
 	void OnCollision();
 
 	void SetGameScene(GameScene* _gameScene) { gameScene = _gameScene; }
-
+	bool IsAlive() { return isAlive; };
 	static const int kFireInterval = 60;
 
 private:

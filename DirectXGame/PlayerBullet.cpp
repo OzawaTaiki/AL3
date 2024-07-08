@@ -35,3 +35,10 @@ Vector3 PlayerBullet::GetWorldPositoin() {
 
 	return worldPos;
 }
+
+void PlayerBullet::ShowImgui() {
+	Vector3 pos = GetWorldPositoin();
+
+	ImGui::Text("pos x: %.2f,y: %.2f,z: %.2f", pos.x, pos.y, pos.z);
+	ImGui::Text("vel x: %.2f,y: %.2f,z: %.2f", velocity.x, velocity.y, velocity.z);
+}

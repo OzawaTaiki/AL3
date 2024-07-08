@@ -131,24 +131,34 @@ void Player::rotate() {
 }
 
 void Player::Attack() {
-	// if (input->TriggerKey(DIK_SPACE)) {
-	if (input->PushKey(DIK_SPACE)) {
+	 if (input->TriggerKey(DIK_SPACE)) {
+	//if (input->PushKey(DIK_SPACE)) {
 
 		const float kBulletSpeed = 1.0f;
 		Vector3 velocity(0, 0, kBulletSpeed);
 		if (isLockOn) {
-			velocity = lockOnEnemyPosition - GetWorldPositoin();
-			velocity = VectorFunction::Normalize(velocity) * kBulletSpeed;
-			// velocity = VectorFunction::TransformNormal(velocity, worldTransform.matWorld_);
+
+			for (const std::pair<Vector3, int>& lockOnPosistion : lockOnEnemyPosition) {
+				velocity = lockOnPosistion.first - GetWorldPositoin();
+				velocity = VectorFunction::Normalize(velocity) * kBulletSpeed;
+				// velocity = VectorFunction::TransformNormal(velocity, worldTransform.matWorld_);
+
+				PlayerBullet* newBullet = new PlayerBullet();
+				newBullet->initialize(model, GetWorldPositoin(), velocity);
+				bullets.push_back(newBullet);
+			}
+
 		} else {
 			velocity = Get3DReticleWorldPositoin() - GetWorldPositoin();
 			velocity = VectorFunction::Normalize(velocity) * kBulletSpeed;
+
+			PlayerBullet* newBullet = new PlayerBullet();
+			newBullet->initialize(model, GetWorldPositoin(), velocity);
+			bullets.push_back(newBullet);
 		}
 
-		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->initialize(model, GetWorldPositoin(), velocity);
-
-		bullets.push_back(newBullet);
+		lockOnEnemyPosition.clear();
+		isLockOn = false;
 	}
 }
 
@@ -182,6 +192,7 @@ void Player::LockOn(const std::list<Enemy*>& _enemy, const ViewProjection& _view
 
 	const float kLockOnRadius = 40.0f;
 
+	int count = 0;
 	for (Enemy* nEnemy : _enemy) {
 		Vector3 enemyPos = nEnemy->GetWorldPositoin();
 		// ビューポート行列
@@ -201,10 +212,34 @@ void Player::LockOn(const std::list<Enemy*>& _enemy, const ViewProjection& _view
 
 		if (kLockOnRadius > distance) {
 			sprite2DReticle->SetPosition(vec2EnemyPosOfScreen);
-			lockOnEnemyPosition = nEnemy->GetWorldPositoin();
+			RegistLockOnPos(std::make_pair(nEnemy->GetWorldPositoin(), count));
 			isLockOn = true;
-		} else
-			isLockOn = false;
+		}
+		count++;
+	}
+
+	LockPosUpdate(_enemy);
+}
+
+void Player::RegistLockOnPos(const std::pair<Vector3, int>& _pair) {
+
+	for (const std::pair<Vector3, int>& lockPos : lockOnEnemyPosition) {
+		if (lockPos.second == _pair.second) {
+			return;
+		}
+	}
+	lockOnEnemyPosition.push_back(_pair);
+}
+
+void Player::LockPosUpdate(const std::list<Enemy*>& _enemy) {
+
+	for (std::pair<Vector3, int>& lockpos : lockOnEnemyPosition) {
+		if (lockpos.second < _enemy.size()) {
+			auto it = _enemy.begin();
+			std::advance(it, lockpos.second);
+			Enemy* lEnemy = *it;
+			lockpos.first = lEnemy->GetWorldPositoin();
+		}
 	}
 }
 
@@ -213,5 +248,18 @@ void Player::ImGui() {
 	ImGui::DragFloat3("Scale", &worldTransform.scale_.x, 0.1f);
 	ImGui::DragFloat3("Rotation", &worldTransform.rotation_.x, 0.1f);
 	ImGui::DragFloat3("Translation", &worldTransform.translation_.x, 0.1f);
+
+	/*ImGui::Begin("bullet");
+
+	for (PlayerBullet* pb : bullets) {
+		pb->ShowImgui();
+	}
+	ImGui::End();*/
+
+	ImGui::Text("isLockOn: %s", isLockOn ? "true" : "false");
+	for (const std::pair<Vector3, int>& lockPos : lockOnEnemyPosition) {
+		ImGui::Text("x: %.2f,y: %.2f,z: %.2f", lockPos.first.x, lockPos.first.y, lockPos.first.z);
+	}
+
 	ImGui::End();
 }

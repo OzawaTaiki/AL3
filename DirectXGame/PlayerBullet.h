@@ -3,6 +3,7 @@
 #include "VectorFunction.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "imgui.h"
 
 class PlayerBullet {
 public:
@@ -15,10 +16,11 @@ public:
 	void OnCollision();
 	Vector3 GetWorldPositoin();
 
-
 	bool IsDead() const { return isDead; };
 
 	static const uint32_t kLifeTime = 60 * 5;
+
+	void ShowImgui();
 
 private:
 	Model* model = nullptr;

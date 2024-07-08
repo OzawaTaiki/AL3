@@ -27,7 +27,7 @@ void Enemy::Update() {
 
 	worldTransform.UpdateMatrix();
 
-	UpdateApproachPhase();
+	// UpdateApproachPhase();
 
 	Imgui();
 }
@@ -44,7 +44,7 @@ void Enemy::InitializeApproachPhase() { fireTimer = kFireInterval; }
 void Enemy::UpdateApproachPhase() {
 	fireTimer--;
 	if (fireTimer <= 0) {
-		Fire();
+		// Fire();
 		fireTimer = kFireInterval;
 	}
 }

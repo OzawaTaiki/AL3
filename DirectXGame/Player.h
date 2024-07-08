@@ -40,6 +40,9 @@ private:
 	void Update2DReticle(const ViewProjection& _viewProjection);
 	void LockOn(const std::list<Enemy*>& _enemy, const ViewProjection& _viewProjection);
 
+	void RegistLockOnPos(const std::pair<Vector3, int>& _pair);
+	void LockPosUpdate(const std::list<Enemy*>& _enemy);
+
 	WorldTransform worldTransform;
 	Model* model = nullptr;
 	uint32_t textureHandle = 0;
@@ -56,8 +59,9 @@ private:
 	WorldTransform woldTransform3DReticle;
 	uint32_t texture3DReticle = 0;
 	Sprite* sprite2DReticle = nullptr;
+
 	bool isLockOn;
-	Vector3 lockOnEnemyPosition;
+	std::list<std::pair<Vector3, int>> lockOnEnemyPosition;
 
 #ifdef _DEBUG
 	void ImGui();
