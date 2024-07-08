@@ -47,9 +47,10 @@ void GameScene::Initialize() {
 	skydoom->Initialze(modelSkydoom);
 
 	player = new Player();
-	Vector3 playerPos(0, 0, 15.0f);
+	Vector3 playerPos(0, 0, 0.0f);
 	player->Initialize(playerModel, playerTextrueHandle, textuerReticle, playerPos);
-	player->SetParent(&railCamera->GetWorldTransform());
+	// player->SetParent(&railCamera->GetWorldTransform());
+	railCamera->SetParent(&player->GetWorldTransform());
 
 	debugCamera = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 	AxisIndicator::GetInstance()->SetVisible(1);
@@ -75,14 +76,16 @@ void GameScene::Update() {
 
 	Vector3 railCameraPos = {0, 0, 0};
 	Vector3 railCameraRota = {0.0f, 0.002f, 0};
-	railCamera->Update(railCameraPos, railCameraRota);
+
+	//railCamera->SetPosition(player->GetWorldPositoin());
+	railCamera->Update();
 
 	skydoom->Update();
 
 	player->Update(viewProjection);
 
 	for (Enemy* nEnemy : enemy) {
-		nEnemy->Update();		
+		nEnemy->Update();
 	}
 	enemy.remove_if([](Enemy* enemy) {
 		if (!enemy->GetIsAlive()) {
@@ -116,7 +119,6 @@ void GameScene::Update() {
 	}
 
 	CheckAllCollisions();
-
 }
 
 void GameScene::Draw() {

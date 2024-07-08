@@ -18,6 +18,8 @@ public:
 
 	Vector3 GetWorldPositoin();
 	Vector3 Get3DReticleWorldPositoin();
+	const WorldTransform& GetWorldTransform() { return worldTransform; };
+
 	const std::list<PlayerBullet*>& GetBullets() const { return bullets; };
 
 	void OnCollision();

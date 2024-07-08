@@ -43,10 +43,11 @@ void Player::Update(ViewProjection& _viewProjection) {
 		return false;
 	});
 
+	//worldTransform.translation_ = {0, 0, 0};
+
 	rotate();
 	Move();
 
-	Vector3 move = {0, 0, 0}; // キャラクターの移動ベクトル
 
 	// Update3DReticle();
 	ScreenToWorld(_viewProjection);
@@ -252,5 +253,6 @@ void Player::ImGui() {
 	ImGui::DragFloat3("Scale", &worldTransform.scale_.x, 0.1f);
 	ImGui::DragFloat3("Rotation", &worldTransform.rotation_.x, 0.1f);
 	ImGui::DragFloat3("Translation", &worldTransform.translation_.x, 0.1f);
+
 	ImGui::End();
 }

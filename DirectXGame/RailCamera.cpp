@@ -12,18 +12,24 @@ void RailCamera::Initialize(const Vector3& _worldPos, const Vector3& _rotare) {
 	viewProjection.Initialize();
 }
 
-void RailCamera::Update(const Vector3& _move, const Vector3& _rotare) {
+void RailCamera::Update() {
 
 	Imgui();
-	if (!isStop) {
-		worldTransform.translation_ += _move;
-		worldTransform.rotation_ += _rotare;
-	}
+
 	worldTransform.UpdateMatrix();
 	// worldTransform.matWorld_ = MatrixFunction::MakeAffineMatrix(worldTransform.scale_, worldTransform.rotation_, worldTransform.translation_);
 	// worldTransform.TransferMatrix();
 
 	viewProjection.matView = MatrixFunction::Inverse(worldTransform.matWorld_);
+}
+
+void RailCamera::SetPosition(const Vector3& _pos) { worldTransform.translation_ = _pos; }
+
+void RailCamera::SetTranslate(const Vector3& _move, const Vector3& _rotare) {
+	if (!isStop) {
+		worldTransform.translation_ += _move;
+		worldTransform.rotation_ += _rotare;
+	}
 }
 
 void RailCamera::Imgui() {
