@@ -3,7 +3,7 @@
 #include "WorldTransform.h"
 #include"ViewProjection.h"
 
-class PLayer {
+class Player {
 public:
 	void Initialize(Model* _model, uint32_t _textrueHandle);
 	void Update();

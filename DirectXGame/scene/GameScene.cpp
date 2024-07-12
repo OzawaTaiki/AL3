@@ -2,13 +2,9 @@
 #include "TextureManager.h"
 #include <cassert>
 
-GameScene::GameScene() {  }
+GameScene::GameScene() {}
 
-GameScene::~GameScene() 
-{ 
-	delete model; 
-	delete player;
-}
+GameScene::~GameScene() {}
 
 void GameScene::Initialize() {
 
@@ -16,17 +12,16 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
-	textrueHandle = TextureManager::Load("uvChecker.png");
-		
-	model = Model::Create();
 
 	viewProjection.Initialize();
 
-	player = new PLayer();
-	player->Initialize(model,textrueHandle);
+	player_ = std::make_unique<Player>();
+	playerModel_.reset(Model::Create());
+	playerTexture = TextureManager::Load("uvChecker.png");
+	player_->Initialize(playerModel_.get(), playerTexture);
 }
 
-void GameScene::Update() { player->Update(); }
+void GameScene::Update() { player_->Update(); }
 
 void GameScene::Draw() {
 
@@ -55,7 +50,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
-	player->Draw(viewProjection);
+	player_->Draw(viewProjection);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
