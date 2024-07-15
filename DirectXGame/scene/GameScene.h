@@ -1,10 +1,13 @@
 #pragma once
 
 #include "Audio.h"
+#include "DebugCamera.h"
 #include "DirectXCommon.h"
+#include "Ground.h"
 #include "Input.h"
 #include "Model.h"
 #include "Player.h"
+#include "Skydoom.h"
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
@@ -50,11 +53,18 @@ private: // メンバ変数
 	/// ゲームシーン用
 	/// </summary>
 
-
 	// ビュープロジェクション
 	ViewProjection viewProjection;
 
 	std::unique_ptr<Player> player_;
 	std::unique_ptr<Model> playerModel_;
-	uint32_t playerTexture = 0;
+
+	std::unique_ptr<Skydoom> skydoom_;
+	std::unique_ptr<Model> skydoomModel_;
+
+	std::unique_ptr<Ground> ground_;
+	std::unique_ptr<Model> groundModel_;
+
+	bool debugCameraActive = false;
+	std::unique_ptr<DebugCamera> debugCamera;
 };

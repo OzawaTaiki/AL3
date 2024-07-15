@@ -3,13 +3,16 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 
-class Player {
+class Ground {
 public:
+	Ground();
+	~Ground();
+
 	void Initialize(Model* _model);
 	void Update();
-	void Draw(ViewProjection& _viewProjection);
+	void Draw(const ViewProjection& _viewProjection);
 
 private:
-	WorldTransform worldTransform;
-	Model* model = nullptr;
+	WorldTransform worldTransform_;
+	Model* model_ = nullptr;
 };

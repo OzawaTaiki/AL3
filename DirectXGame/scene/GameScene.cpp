@@ -12,16 +12,42 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
-
 	viewProjection.Initialize();
 
 	player_ = std::make_unique<Player>();
-	playerModel_.reset(Model::Create());
-	playerTexture = TextureManager::Load("uvChecker.png");
-	player_->Initialize(playerModel_.get(), playerTexture);
+	playerModel_.reset(Model::CreateFromOBJ("playerModel", true));
+	player_->Initialize(playerModel_.get());
+
+	skydoom_ = std::make_unique<Skydoom>();
+	skydoomModel_.reset(Model::CreateFromOBJ("skydoom", true));
+	skydoom_->Initialze(skydoomModel_.get());
+
+	ground_ = std::make_unique<Ground>();
+	groundModel_.reset(Model::CreateFromOBJ("ground", true));
+	ground_->Initialize(groundModel_.get());
+
+	debugCamera = std::make_unique<DebugCamera>(WinApp::kWindowWidth, WinApp::kWindowHeight);
 }
 
-void GameScene::Update() { player_->Update(); }
+void GameScene::Update() {
+	if (input_->TriggerKey(DIK_0))
+		debugCameraActive = debugCameraActive ? false : true;
+
+
+	skydoom_->Update();
+	ground_->Update();
+	player_->Update();
+
+	if (debugCameraActive) {
+		debugCamera->Update();
+		viewProjection.matView = debugCamera->GetViewProjection().matView;
+		viewProjection.matProjection = debugCamera->GetViewProjection().matProjection;
+		viewProjection.TransferMatrix();
+	} else {
+		viewProjection.UpdateMatrix();
+	}
+
+}
 
 void GameScene::Draw() {
 
@@ -50,6 +76,8 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
+	skydoom_->Draw(viewProjection);
+	ground_->Draw(viewProjection);
 	player_->Draw(viewProjection);
 
 	// 3Dオブジェクト描画後処理
