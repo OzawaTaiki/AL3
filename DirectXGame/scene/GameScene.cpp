@@ -1,4 +1,5 @@
 #include "GameScene.h"
+#include "ImGuiManager.h"
 #include "TextureManager.h"
 #include <cassert>
 
@@ -26,6 +27,12 @@ void GameScene::Initialize() {
 	groundModel_.reset(Model::CreateFromOBJ("ground", true));
 	ground_->Initialize(groundModel_.get());
 
+	followCamera_ = std::make_unique<FollowCamera>();
+	followCamera_->Initialize();
+	followCamera_->SetTarget(&player_->GetWorldTransform());
+
+	player_->SetViewProjection(&followCamera_->GetViewProjection());
+
 	debugCamera = std::make_unique<DebugCamera>(WinApp::kWindowWidth, WinApp::kWindowHeight);
 }
 
@@ -33,10 +40,10 @@ void GameScene::Update() {
 	if (input_->TriggerKey(DIK_0))
 		debugCameraActive = debugCameraActive ? false : true;
 
-
 	skydoom_->Update();
 	ground_->Update();
 	player_->Update();
+	followCamera_->Update();
 
 	if (debugCameraActive) {
 		debugCamera->Update();
@@ -44,9 +51,10 @@ void GameScene::Update() {
 		viewProjection.matProjection = debugCamera->GetViewProjection().matProjection;
 		viewProjection.TransferMatrix();
 	} else {
-		viewProjection.UpdateMatrix();
+		viewProjection.matView = followCamera_->GetViewProjection().matView;
+		viewProjection.matProjection = followCamera_->GetViewProjection().matProjection;
+		viewProjection.TransferMatrix();
 	}
-
 }
 
 void GameScene::Draw() {

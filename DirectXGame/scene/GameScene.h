@@ -3,6 +3,7 @@
 #include "Audio.h"
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
+#include "FollowCamera.h"
 #include "Ground.h"
 #include "Input.h"
 #include "Model.h"
@@ -65,6 +66,11 @@ private: // メンバ変数
 	std::unique_ptr<Ground> ground_;
 	std::unique_ptr<Model> groundModel_;
 
+	std::unique_ptr<FollowCamera> followCamera_;
+	
+	
 	bool debugCameraActive = false;
 	std::unique_ptr<DebugCamera> debugCamera;
+
+
 };

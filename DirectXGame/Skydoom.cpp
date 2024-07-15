@@ -13,7 +13,7 @@ void Skydoom::Initialze(Model* _model) {
 }
 
 void Skydoom::Update() {
-	ImGui();
+	//ImGui();
 	worldTransform.matWorld_ = MakeAffineMatrix(worldTransform.scale_, worldTransform.rotation_, worldTransform.translation_);
 	worldTransform.TransferMatrix();
 }
