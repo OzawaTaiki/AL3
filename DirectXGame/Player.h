@@ -19,4 +19,6 @@ private:
 	Model* model_ = nullptr;
 
 	const ViewProjection* viewProjection_;
+
+	float targetAngle_;
 };
