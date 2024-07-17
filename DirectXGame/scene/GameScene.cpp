@@ -16,8 +16,10 @@ void GameScene::Initialize() {
 	viewProjection.Initialize();
 
 	player_ = std::make_unique<Player>();
-	playerModel_.reset(Model::CreateFromOBJ("playerModel", true));
-	player_->Initialize(playerModel_.get());
+	playerModel_.push_back(Model::CreateFromOBJ("body", true));
+	
+	//playerModel_.reset(Model::CreateFromOBJ("playerModel", true));
+	//player_->Initialize(playerModel_.get());
 
 	skydoom_ = std::make_unique<Skydoom>();
 	skydoomModel_.reset(Model::CreateFromOBJ("skydoom", true));

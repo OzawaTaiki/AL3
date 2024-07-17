@@ -58,7 +58,7 @@ private: // メンバ変数
 	ViewProjection viewProjection;
 
 	std::unique_ptr<Player> player_;
-	std::unique_ptr<Model> playerModel_;
+	std::vector<Model*> playerModel_;
 
 	std::unique_ptr<Skydoom> skydoom_;
 	std::unique_ptr<Model> skydoomModel_;
@@ -67,10 +67,7 @@ private: // メンバ変数
 	std::unique_ptr<Model> groundModel_;
 
 	std::unique_ptr<FollowCamera> followCamera_;
-	
-	
+
 	bool debugCameraActive = false;
 	std::unique_ptr<DebugCamera> debugCamera;
-
-
 };

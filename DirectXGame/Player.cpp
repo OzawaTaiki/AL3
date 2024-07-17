@@ -8,15 +8,14 @@
 
 Player::Player() {}
 
-void Player::Initialize(Model* _model) {
+void Player::Initialize(const std::vector<Model*>& _models) {
 	// NULLチェック
-	assert(_model);
-	model_ = _model;
+	models_ = _models;
 	// ワールドトランス初期化
 
 	targetAngle_ = 0.0f;
 
-	worldTransform_.Initialize();
+	//worldTransform_.Initialize();
 }
 
 void Player::Update() {
@@ -42,7 +41,7 @@ void Player::Update() {
 			Matrix4x4 rotateMatrix = MakeRotateMatrix(viewProjection_->rotation_);
 			move = TransformNormal(move, rotateMatrix);
 
-			worldTransform_.translation_ += move;
+			worldTransform_[0].translation_ += move;
 
 			normalizeMove = TransformNormal(normalizeMove, rotateMatrix);
 			targetAngle_ = std::atan2(normalizeMove.x, normalizeMove.z);
@@ -51,12 +50,12 @@ void Player::Update() {
 	}
 
 	ImGui::Begin("window");
-	ImGui::DragFloat3("rotate", &worldTransform_.rotation_.x, 0.01f);
+	ImGui::DragFloat3("rotate", &worldTransform_[0].rotation_.x, 0.01f);
 	ImGui::Text("%.3f", targetAngle_);
 	ImGui::End();
-	worldTransform_.rotation_.y = LerpShortAngle(worldTransform_.rotation_.y, targetAngle_, 0.1f);
+	worldTransform_[0].rotation_.y = LerpShortAngle(worldTransform_[0].rotation_.y, targetAngle_, 0.1f);
 
-	worldTransform_.UpdateMatrix();
+	worldTransform_[0].UpdateMatrix();
 }
 
-void Player::Draw(ViewProjection& _viewProjection) { model_->Draw(worldTransform_, _viewProjection); }
+void Player::Draw(const ViewProjection& _viewProjection) { models_[0]->Draw(worldTransform_[0], _viewProjection); };
