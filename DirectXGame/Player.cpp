@@ -104,7 +104,7 @@ void Player::ImGui() {
 	ImGui::Text("floatingAnimation");
 	ImGui::Separator();
 	int imStep = floatingCycleFrameCount_;
-	ImGui::SliderInt("step", &imStep, 1, 256);
+	ImGui::SliderInt("CycleFrame", &imStep, 1, 256);
 	floatingCycleFrameCount_ = static_cast<int16_t>(imStep);
 	stepPerFrame_ = 2.0f * std::numbers::pi_v<float> / floatingCycleFrameCount_;
 	ImGui::SliderFloat("amplitude", &floatAmplitude, 0.01f, 1.0f);
