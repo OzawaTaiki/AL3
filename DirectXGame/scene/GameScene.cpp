@@ -17,9 +17,12 @@ void GameScene::Initialize() {
 
 	player_ = std::make_unique<Player>();
 	playerModel_.push_back(Model::CreateFromOBJ("body", true));
-	
-	//playerModel_.reset(Model::CreateFromOBJ("playerModel", true));
-	//player_->Initialize(playerModel_.get());
+	playerModel_.push_back(Model::CreateFromOBJ("head", true));
+	playerModel_.push_back(Model::CreateFromOBJ("rightArm", true));
+	playerModel_.push_back(Model::CreateFromOBJ("leftArm", true));
+
+	// playerModel_.reset(Model::CreateFromOBJ("playerModel", true));
+	player_->Initialize(playerModel_);
 
 	skydoom_ = std::make_unique<Skydoom>();
 	skydoomModel_.reset(Model::CreateFromOBJ("skydoom", true));
@@ -39,7 +42,7 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
-	if (input_->TriggerKey(DIK_0))
+	if (input_->PushKey(DIK_LSHIFT) && input_->TriggerKey(DIK_0))
 		debugCameraActive = debugCameraActive ? false : true;
 
 	skydoom_->Update();
